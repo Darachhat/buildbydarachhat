@@ -6,6 +6,7 @@ import TextInput from '@/Components/Core/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 export default function Login({
     status,
@@ -29,20 +30,23 @@ export default function Login({
     };
 
     return (
-        <GuestLayout>
+        <AuthenticatedLayout>
             <Head title="Log in" />
+            <div className="p-40 ">
+              <div className="card bg-white shadow max-w-[420px] mx-auto">
+                <div className="card-body">
 
-            {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
+                  {status && (
+                    <div className="mb-4 text-sm font-medium text-green-600">
+                      {status}
+                    </div>
+                  )}
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                  <form onSubmit={submit}>
+                    <div>
+                      <InputLabel htmlFor="email" value="Email" />
 
-                    <TextInput
+                      <TextInput
                         id="email"
                         type="email"
                         name="email"
@@ -51,15 +55,15 @@ export default function Login({
                         autoComplete="username"
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
-                    />
+                      />
 
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
+                      <InputError message={errors.email} className="mt-2" />
+                    </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <div className="mt-4">
+                      <InputLabel htmlFor="password" value="Password" />
 
-                    <TextInput
+                      <TextInput
                         id="password"
                         type="password"
                         name="password"
@@ -67,44 +71,47 @@ export default function Login({
                         className="mt-1 block w-full"
                         autoComplete="current-password"
                         onChange={(e) => setData('password', e.target.value)}
-                    />
+                      />
 
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
+                      <InputError message={errors.password} className="mt-2" />
+                    </div>
 
-                <div className="mt-4 block">
-                    <label className="flex items-center">
+                    <div className="mt-4 block">
+                      <label className="flex items-center">
                         <Checkbox
-                            name="remember"
-                            checked={data.remember}
-                            onChange={(e) =>
-                                setData(
-                                    'remember',
-                                    (e.target.checked || false) as false,
-                                )
-                            }
+                          name="remember"
+                          checked={data.remember}
+                          onChange={(e) =>
+                            setData(
+                              'remember',
+                              (e.target.checked || false) as false,
+                            )
+                          }
                         />
                         <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
                             Remember me
                         </span>
-                    </label>
-                </div>
+                      </label>
+                    </div>
 
-                <div className="mt-4 flex items-center justify-end">
-                    {canResetPassword && (
+                    <div className="mt-4 flex items-center justify-end">
+                      {canResetPassword && (
                         <Link
-                            href={route('password.request')}
-                            className="link link-hover"
+                          href={route('password.request')}
+                          className="link link-hover"
                         >
-                            Forgot your password?
+                          Forgot your password?
                         </Link>
-                    )}
+                      )}
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                      <PrimaryButton className="ms-4" disabled={processing}>
                         Log in
-                    </PrimaryButton>
+                      </PrimaryButton>
+                    </div>
+                  </form>
                 </div>
-            </form>
-        </GuestLayout>
+              </div>
+            </div>
+        </AuthenticatedLayout>
     );
 }
