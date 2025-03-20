@@ -28,7 +28,7 @@ class ProductVariationTypes extends EditRecord
                     ->relationship()
                     ->collapsible()
                     ->defaultItems(1)
-                    ->addActionLabel('Add Variation Type')
+                    ->addActionLabel('Add new variation type')
                     ->columns(2)
                     ->columnSpan(2)
                     ->schema([
@@ -48,6 +48,7 @@ class ProductVariationTypes extends EditRecord
                                     ->image()
                                     ->nullable()
                                     ->openable()
+                                    ->multiple()
                                     ->panelLayout('grid')
                                     ->collection('images')
                                     ->reorderable()

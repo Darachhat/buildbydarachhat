@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\ProductResource\Pages\ProductVariations;
 use App\Filament\Resources\ProductResource\Pages\ProductVariationTypes;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use App\Enums\ProductStatusEnum;
@@ -32,7 +33,12 @@ class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
 
-    protected static SubNavigationPosition $subNavigationPosition =SubNavigationPosition::End;
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::End;
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->forVendor();
+    }
 
     public static function form(Form $form): Form
     {
@@ -58,11 +64,9 @@ class ProductResource extends Resource
                         ->searchable()
                         ->required()
                         ->reactive()
-                        ->afterStateUpdated(
-                            function (callable $set) {
+                        ->afterStateUpdated(function (callable $set) {
                                 $set('category_id', null);
-                            }
-                        ),
+                            }),
 
                     Select::make('category_id')
                         ->relationship(
@@ -121,7 +125,7 @@ class ProductResource extends Resource
                 SpatieMediaLibraryImageColumn::make('images')
                     ->collection('images')
                     ->limit(1)
-                    ->label('Images')
+                    ->label('Image')
                     ->conversion('thumb'),
                 Tables\Columns\TextColumn::make('title')
                     ->sortable()
@@ -165,6 +169,7 @@ class ProductResource extends Resource
             'edit' => Pages\EditProduct::route('/{record}/edit'),
             'images' => Pages\ProductImages::route('/{record}/images'),
             'variation-types' => Pages\ProductVariationTypes::route('/{record}/variation-types'),
+            'variations' => Pages\ProductVariations::route('/{record}/variations'),
         ];
     }
 
@@ -174,6 +179,7 @@ class ProductResource extends Resource
             EditProduct::class,
             ProductImages::class,
             ProductVariationTypes::class,
+            ProductVariations::class,
         ]);
 
     }
