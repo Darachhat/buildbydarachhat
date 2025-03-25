@@ -118,22 +118,22 @@ function Show({product, variationOptions}: {
         <div key={type.id}>
           <b>{type.name}</b>
           {type.type === 'Image' &&
-            <div className="flex gap-2 mb-4">
+            <div className="flex gap-2 mb-4 mt-2">
               {type.options.map(option => (
                 <div onClick={() => chooseOption(type.id, option)} key={option.id}>
                   {option.images && <img src={option.images[0].thumb} alt="" className={'transition-all duration-400 w-[40px] ' + (
-                    selectedOptions[type.id]?.id == option.id ? 'rounded-full outline outline-2 outline-gray-500': ''
+                    selectedOptions[type.id]?.id == option.id ? 'rounded-full outline outline-3 outline-gray-500': ''
                   )} />}
                 </div>
               ))}
             </div>}
           {type.type === 'Radio' &&
-            <div className="flex mb-4 gap-2 join-horizontal">
+            <div className="flex mb-4 gap-2 join-horizontal mt-2">
               {type.options.map(option => (
                   <input
                     onChange={() => chooseOption(type.id, option)}
                     key={option.id}
-                    className={"join-item btn " + (selectedOptions[type.id]?.id == option.id ? 'btn-info text-white' : '')}
+                    className={"join-item btn " + (selectedOptions[type.id]?.id == option.id ? 'bg-gray-500 outline-none text-white' : '')}
                     type="radio"
                     value={option.id}
                     checked={selectedOptions[type.id]?.id === option.id}
@@ -160,7 +160,7 @@ function Show({product, variationOptions}: {
             <option key={i + 1} value={i + 1}>Quantity: {i + 1}</option>
           ))}
         </select>
-        <button onClick={addToCart} className="btn btn-info text-white">Add to Cart</button>
+        <button onClick={addToCart} className="btn bg-gray-500 text-white">Add to Cart</button>
       </div>
     )
   }
@@ -184,7 +184,7 @@ function Show({product, variationOptions}: {
           <div className="col-span-5">
             <h1 className="text-2xl mb-8">{product.title}</h1>
             <div>
-              <div className="text-3xl font-semibold">
+              <div className="text-3xl font-bold">
                 <CurrencyFormatter amount={computedProduct.price} locale={"en"}/>
               </div>
             </div>
@@ -194,7 +194,7 @@ function Show({product, variationOptions}: {
 
             {computedProduct.quantity != undefined &&
               computedProduct.quantity < 10  &&
-              <div className="text-error my-4">
+              <div className="my-4 text-red-600">
                 <span>Only {computedProduct.quantity} left</span>
               </div>
               }
