@@ -19,7 +19,8 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->foreignId('user_id')
                 ->index()
-                ->constrained('users');
+                ->constrained('users')
+                ->cascadeOnDelete();
             $table->integer('quantity');
             $table->decimal('price', 20 ,4);
             $table->json('variation_type_option_ids')->nullable();
