@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'secondhand'),
 
     /*
     |--------------------------------------------------------------------------
@@ -122,5 +122,16 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    'currency' => env('APP_CURRENCY', 'USD'),
+
+    'stripe_secret_key' => env('STRIPE_SECRET'),
+    'stripe_webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
+
+//    'aba_url' => env('ABA_URL', 'https://checkout-sandbox.payway.com.kh/api/payment-gateway/v1/payments/purchase'),
+//    'aba_key' => env('ABA_KEY', 'b976f3ee79bf11df981a92513d665f89556ae6ab'),
+//    'merchant_id' => env('ABA_MERCHANT_ID', 'ec449838'),
+
+    'platform_fee_percent' => 10,
 
 ];
