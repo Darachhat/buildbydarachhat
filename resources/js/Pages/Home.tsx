@@ -10,7 +10,7 @@ export default function Home({
     return (
         <AuthenticatedLayout>
             <Head title="Home" />
-          <div className="hero bg-gray-50 h-[500px]">
+          <div className="hero bg-base-100 dark:bg-gray-500   h-[500px]">
             <div className="hero-content flex-col lg:flex-row-reverse">
               <img
                 src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
@@ -26,7 +26,7 @@ export default function Home({
             </div>
           </div>
 
-          <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 p-8'>
+          <div className='bg-zinc-200 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 p-8'>
             {products.data.map(product => (
               <ProductItem product={product} key={product.id} />
             ))}

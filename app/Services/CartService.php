@@ -22,10 +22,8 @@ class CartService
 
     public function addItemToCart(Product $product, int $quantity = 1, $optionIds = null)
     {
-        if ($optionIds === null ) {
-            $optionIds = $product->variationTypes()
-                ->mapWithKeys(fn(VariationType $type) => [$type->id => $type->options[0]?->id])
-                ->toArray();
+        if (!$optionIds) {
+            $optionIds = $product->getFirstOptionsMap();
         }
 
         $price = $product->getPriceForOptions($optionIds);
@@ -239,7 +237,7 @@ class CartService
 
         CartItem::where('user_id', $userId)
             ->where('product_id', $productId)
-            ->where('variation_type_option_id', json_encode($optionIds))
+            ->where('variation_type_option_ids', json_encode($optionIds))
             ->delete();
     }
 

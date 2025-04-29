@@ -24,7 +24,7 @@ function ProductItem({ product }: { product: Product }) {
   }
 
   return (
-    <div className="card bg-base-100 shadow-xl">
+    <div className="card bg-base-100 dark:bg-gray-500 shadow-xl">
          <Link href={route('product.show', product.slug)}>
               <figure>
                 <img
@@ -36,11 +36,11 @@ function ProductItem({ product }: { product: Product }) {
         <div className="card-body">
             <h2 className="card-title">{product.title}</h2>
             <p>
-              by <Link href="/" className="hover:underline">{product.user.name}</Link>&nbsp;
-              in <Link href="/" className="hover:underline">{product.department.name}</Link>
+              by <Link href={route('vendor.profile', product.user.store_name)} className="hover:underline">{product.user.name}</Link>&nbsp;
+              in <Link href={route('product.byDepartment', product.department.slug)} className="hover:underline">{product.department.name}</Link>
             </p>
           <div className="card-actions items-center justify-between mt-3">
-            <button onClick={addToCart} className="btn btn-primary">Add to Cart</button>
+            <button onClick={addToCart} className="btn btn-info text-white">Add to Cart</button>
             <span className="text-2xl">
               <CurrencyFormatter amount={product.price} locale="en-US" />
             </span>

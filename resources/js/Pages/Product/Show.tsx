@@ -1,16 +1,19 @@
-import {Product, VariationTypeOption} from "@/types";
-import {Head, router, useForm, usePage} from "@inertiajs/react";
-import {useMemo, useState, useEffect} from "react";
+import {PageProps, Product, VariationTypeOption} from "@/types";
+import {Head, Link, router, useForm, usePage} from "@inertiajs/react";
+import React, {useMemo, useState, useEffect} from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Carousel from "@/Components/Core/Carousel";
 import CurrencyFormatter from "@/Components/Core/CurrencyFormatter";
 import {arraysAreEqual} from "@/helpers";
-import { Config } from 'ziggy-js';
-import {type} from "node:os";
 
-function Show({product, variationOptions}: {
-  product: Product, variationOptions: number[]
-}) {
+function Show({
+                appName,
+                product,
+                variationOptions
+}: PageProps<{
+  product: Product,
+  variationOptions: number[]
+}>) {
 
   const form = useForm<{
     option_ids: Record<string, number>;
@@ -25,12 +28,12 @@ function Show({product, variationOptions}: {
   const {url} = usePage();
 
   const [selectedOptions, setSelectedOptions] =
-    useState<Record<number, VariationTypeOption>>([]);
+    useState<Record<number, VariationTypeOption>>({});
 
   const images = useMemo(() => {
     for (let typeId in selectedOptions){
       const option = selectedOptions[typeId];
-      if (option.images.length > 0) return option.images;
+      if (option?.images?.length > 0) return option.images;
     }
     return product.images;
   }, [product, selectedOptions]);
@@ -60,7 +63,7 @@ function Show({product, variationOptions}: {
       console.log(selectedOptionId, type.options)
       chooseOption(
         type.id,
-        type.options.find(op => op.id == selectedOptionId) || type.options[1],
+        type.options.find(op => op.id == selectedOptionId) || type.options[0],
         false,
       )
     }
@@ -175,14 +178,34 @@ function Show({product, variationOptions}: {
 
   return (
     <AuthenticatedLayout>
-      <Head title={product.title}/>
+      <Head>
+        <title>{product.title}</title>
+        <meta name='title' content={product.meta_title || product.title} />
+        <meta name='description' content={product.meta_description} />
+        <link rel="canonical" href={route('product.show', product.slug)} />
+
+        <meta property="og:title" content={product.title} />
+        <meta property="og:description" content={product.meta_description}/>
+        <meta property="og:image" content={images[0]?.small} />
+        <meta property="og:url" content={route('product.show', product.slug)} />
+        <meta property="og:type" content="product" />
+        <meta property="og:site_name" content={appName} />
+      </Head>
       <div className="container mx-auto p-8">
         <div className="grid gap-8 grid-cols-1 lg:grid-cols-12">
           <div className="col-span-7">
             <Carousel images={images} />
           </div>
           <div className="col-span-5">
-            <h1 className="text-2xl mb-8">{product.title}</h1>
+            <h1 className="text-2xl">{product.title}</h1>
+            <p className={"mb-8"}>
+              by <Link
+              href={route('vendor.profile', product.user.store_name )}
+              className="hover:underline">
+              {product.user.name}
+            </Link>&nbsp;
+              in <Link href={route('product.byDepartment', product.department.slug)} className="hover:underline">{product.department.name}</Link>
+            </p>
             <div>
               <div className="text-3xl font-bold">
                 <CurrencyFormatter amount={computedProduct.price} locale={"en"}/>
