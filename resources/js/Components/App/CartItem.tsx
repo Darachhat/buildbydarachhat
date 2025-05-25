@@ -60,7 +60,7 @@ function CartItem({item}: {item: CartItemType}) {
           </div>
           <div className={"flex justify-between items-center mt-4"}>
             <div className={"flex gap-2 items-center"}>
-              <div className={"text-sm"}>Quantity:</div>
+              <div className={"text-sm font-khmer"}>ចំនួន:</div>
               <div className={error ? 'tooltip tooltip-open tooltip-error' : ''} data-tip={error}>
                 <TextInput
                   type="number"
@@ -72,11 +72,11 @@ function CartItem({item}: {item: CartItemType}) {
 
               <button
                 onClick={() => onDeleteClick()}
-                className={"btn btn-sm btn-ghost"}>
-                Delete
+                className={"font-khmer btn btn-sm btn-error text-white hover:bg-gray-50 hover:text-error "}>
+                លុប
               </button>
-              <button className={"btn btn-sm btn-ghost"}>
-                Save for Later
+              <button className={"btn btn-sm btn-dash font-khmer"}>
+                រក្សាទុកសម្រាប់ពេលក្រោយ
               </button>
             </div>
             <div className={"font-bold text-lg"}>

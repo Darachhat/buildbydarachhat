@@ -13,8 +13,8 @@ export default function Edit({
     return (
         <AuthenticatedLayout
             header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Profile
+                <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200 font-khmer">
+                  ប្រវត្តិរូប
                 </h2>
             }
         >

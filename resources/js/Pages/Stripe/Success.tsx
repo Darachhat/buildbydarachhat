@@ -19,15 +19,15 @@ function Success({orders}: PageProps<{ orders: Order[] }>) {
             Payment was successfully Completed.
           </div>
         </div>
-        <div className={"my-6 text-center text-lg"}>
-          Thanks for your payment. Your payment was successfully Completed.
+        <div className={"my-6 text-center text-lg font-khmer"}>
+          សូមអរគុណចំពោះការបង់ប្រាក់របស់អ្នក។ ការទូទាត់របស់អ្នកត្រូវបានបញ្ចប់ដោយជោគជ័យ។
         </div>
         {orders.map(order => (
           <div key={order.id} className={'bg-white dark:bg-gray-800 rounded-lg p-6 mb-4'}>
-            <h3 className={"text-3xl mb-3"}>Order Summary</h3>
+            <h3 className={"text-3xl mb-3 font-khmer"}>សង្ខេបនៃការបញ្ជាទិញ</h3>
             <div className={"flex justify-between mb-2 font-bold"}>
-              <div className={"text-gray-400"}>
-                Seller
+              <div className={"text-gray-400 font-khmer"}>
+                អ្នកលក់
               </div>
               <div>
                 <Link href="#" className={"hover:underline"}>

@@ -10,7 +10,7 @@ export default function PrimaryButton({
         <button
             {...props}
             className={
-                `btn btn-outline btn-info hover:text-white active:text-white ${
+                `btn btn-outline bg-green-600 text-white hover:text-gray-700 hover:bg-green-300 active:text-gray-700 active:bg-green-300 ${
                     disabled && 'opacity-25'
                 } ` + className
             }

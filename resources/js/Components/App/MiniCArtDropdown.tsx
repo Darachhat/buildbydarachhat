@@ -8,8 +8,8 @@ function MiniCArtDropdown() {
   const {totalQuantity, totalPrice, miniCartItems} = usePage().props;
 
   return (
-    <div className="dropdown dropdown-end">
-      <div tabIndex={0} role="button" className="btn bg-base-100 dark:!bg-gray-700 border-gray-100 btn-ghost btn-circle">
+    <div className="dropdown sm:dropdown-end sm:dropdown-center px-5 z-50">
+      <div tabIndex={0} role="button" className="btn focus:outline-none bg-base-100 dark:!bg-gray-700 border-gray-100 btn-ghost btn-circle">
         <div className="indicator">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /> </svg>
           <span className="badge badge-sm indicator-item">
@@ -21,12 +21,12 @@ function MiniCArtDropdown() {
         tabIndex={0}
         className="card card-compact dropdown-content bg-base-100 dark:!bg-gray-700 z-1 mt-3 w-[280px] shadow">
         <div className="card-body">
-          <span className="text-lg font-bold">{totalQuantity} Items</span>
+          <span className="text-lg font-bold font-khmer">ចំនួនទំនិញសរុប: {totalQuantity} </span>
 
           <div className={"my-4 max-h-[300px] overflow-auto"}>
             {miniCartItems.length === 0  && (
-              <div className="py-2 text-center text-gray-500">
-                You don't have any items yet.
+              <div className="py-2 text-center text-gray-500 font-khmer">
+                អ្នកមិនទាន់មានទំនិញក្នុងកន្ទ្រកនោះទេ
               </div>
               )}
             {miniCartItems.map((item) => (
@@ -40,9 +40,9 @@ function MiniCArtDropdown() {
                       {item.title}
                     </Link>
                   </h3>
-                  <div className={'flex justify-between text-sm'}>
+                  <div className={'flex justify-between text-sm font-khmer'}>
                     <div>
-                      Quantity: {item.quantity}
+                      ចំនួន: {item.quantity}
                     </div>
                     <div>
                       <CurrencyFormatter amount={item.quantity * item.price} locale={'en-US'} />
@@ -53,11 +53,11 @@ function MiniCArtDropdown() {
             ))}
           </div>
 
-          <span className="text-lg ">
-            Subtotal: <CurrencyFormatter amount={totalPrice} locale={"en"}/>
+          <span className="text-lg font-khmer">
+            សរុប: <CurrencyFormatter amount={totalPrice} locale={"en"}/>
           </span>
           <div className="card-actions">
-            <Link href={route('cart.index')} className="btn btn-info text-white btn-block">View cart</Link>
+            <Link href={route('cart.index')} className="btn bg-green-600 text-white btn-block font-khmer">មើលកន្ទ្រក</Link>
           </div>
         </div>
       </div>

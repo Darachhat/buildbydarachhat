@@ -118,14 +118,14 @@ function Show({
   const renderProductVariationTypes = () => {
     return (
       product.variationTypes.map((type, i) => (
-        <div key={type.id}>
+        <div key={type.id} >
           <b>{type.name}</b>
           {type.type === 'Image' &&
             <div className="flex gap-2 mb-4 mt-2">
               {type.options.map(option => (
                 <div onClick={() => chooseOption(type.id, option)} key={option.id}>
                   {option.images && <img src={option.images[0].thumb} alt="" className={'transition-all duration-400 w-[40px] ' + (
-                    selectedOptions[type.id]?.id == option.id ? 'rounded-full outline outline-3 outline-gray-500': ''
+                    selectedOptions[type.id]?.id == option.id ? 'rounded-full outline outline-3 outline-gray-400': ''
                   )} />}
                 </div>
               ))}
@@ -152,7 +152,7 @@ function Show({
   const renderAddToCartButton = () => {
     return (
 
-      <div className="mb-8 flex gap-4">
+      <div className="mb-8 flex gap-4" >
         <select
           value={form.data.quantity}
           onChange={onQuantityChange}
@@ -160,10 +160,10 @@ function Show({
           {Array.from({
             length: Math.min(10, computedProduct.quantity)
           }).map((el, i) => (
-            <option key={i + 1} value={i + 1}>Quantity: {i + 1}</option>
+            <option className={"font-khmer"} key={i + 1} value={i + 1}>ចំនួន: {i + 1}</option>
           ))}
         </select>
-        <button onClick={addToCart} className="btn bg-gray-500 text-white">Add to Cart</button>
+        <button onClick={addToCart} className="btn bg-gray-100 border-1 border border-success text-green-600 text-sm hover:text-gray-50 hover:bg-green-600 active:text-gray-100 active:bg-green-600">បញ្ចូលទៅក្នុងកន្ទ្រក</button>
       </div>
     )
   }
@@ -191,20 +191,20 @@ function Show({
         <meta property="og:type" content="product" />
         <meta property="og:site_name" content={appName} />
       </Head>
-      <div className="container mx-auto p-8">
+      <div className="container mx-auto p-8 bg-green-50" >
         <div className="grid gap-8 grid-cols-1 lg:grid-cols-12">
           <div className="col-span-7">
             <Carousel images={images} />
           </div>
           <div className="col-span-5">
             <h1 className="text-2xl">{product.title}</h1>
-            <p className={"mb-8"}>
-              by <Link
+            <p className={"mb-8 mt-2 font-khmer"}>
+              ផលិតផលរបស់ <Link
               href={route('vendor.profile', product.user.store_name )}
-              className="hover:underline">
+              className="text-green-600 hover:underline font-khmer">
               {product.user.name}
             </Link>&nbsp;
-              in <Link href={route('product.byDepartment', product.department.slug)} className="hover:underline">{product.department.name}</Link>
+              ក្នុងផ្នែក <Link href={route('product.byDepartment', product.department.slug)} className="text-green-600 hover:underline">{product.department.name}</Link>
             </p>
             <div>
               <div className="text-3xl font-bold">
@@ -215,17 +215,27 @@ function Show({
             {/*<pre>{JSON.stringify(product.variationTypes, undefined, 2)}</pre>*/}
               {renderProductVariationTypes()}
 
-            {computedProduct.quantity != undefined &&
+            {computedProduct.quantity > 0 &&
               computedProduct.quantity < 10  &&
               <div className="my-4 text-red-600">
-                <span>Only {computedProduct.quantity} left</span>
+                <span className={"font-khmer"}>ចំនួននៅសល់តែ {computedProduct.quantity} ប៉ុណ្ណោះ</span>
               </div>
               }
+            {computedProduct.quantity != undefined &&
+              computedProduct.quantity == 0 &&
+              <div className="my-4 text-red-600">
+                <span className={"font-khmer"}>ផលិតផលបានលក់អស់ក្នុងស្ទុក</span>
+              </div>
+            }
 
-            {renderAddToCartButton()}
+            {computedProduct.quantity > 0 &&
+              renderAddToCartButton()
+            }
 
-            <b className="text-xl">About the Item</b>
-            <div className="wysiwyg-output" dangerouslySetInnerHTML={{__html: product.description}}/>
+
+
+            <b className="text-xl font-khmer">អំពីផលិតផលនេះ</b>
+            <div className="wysiwyg-output font-khmer" dangerouslySetInnerHTML={{__html: product.description}}/>
           </div>
         </div>
       </div>

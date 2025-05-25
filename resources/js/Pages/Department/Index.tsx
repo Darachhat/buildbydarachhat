@@ -38,14 +38,16 @@ function Index({
         </div>
 
         {products.data.length === 0 && (
-          <div className={'py-16 px-8 text-gray-300 text-3xl text-center'}>
-            No Products Found.
+          <div className={'py-8 px-8 text-black text-3xl text-center font-khmer'}>
+            មិនទាន់មានផលិតផលប្រភេទនេះទេ
           </div>
         )}
-        <div className={'grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 p-8'}>
-          {products.data.map(product => (
-            <ProductItem product={product} key={product.id} />
+        <div className="bg-green-100 py-12 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto grid gap-1 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {products.data.map((product) => (
+              <ProductItem product={product} key={product.id}/>
             ))}
+          </div>
         </div>
       </div>
     </AuthenticatedLayout>

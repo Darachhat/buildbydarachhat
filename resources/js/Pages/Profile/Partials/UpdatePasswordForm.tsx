@@ -51,13 +51,12 @@ export default function UpdatePasswordForm({
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    Update Password
+                <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100 font-khmer">
+                  ធ្វើបច្ចុប្បន្នភាពពាក្យសម្ងាត់
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Ensure your account is using a long, random password to stay
-                    secure.
+                <p className="mt-3 text-sm text-gray-600 dark:text-gray-400 font-khmer">
+                  ត្រូវប្រាកដថាគណនីរបស់អ្នកកំពុងប្រើពាក្យសម្ងាត់ដែលមិនអាចស្មាន់បាន ដើម្បីរក្សាសុវត្ថិភាព។
                 </p>
             </header>
 
@@ -65,7 +64,8 @@ export default function UpdatePasswordForm({
                 <div>
                     <InputLabel
                         htmlFor="current_password"
-                        value="Current Password"
+                        className={"font-khmer"}
+                        value="ពាក្យសម្ងាត់បច្ចុប្បន្ន"
                     />
 
                     <TextInput
@@ -87,7 +87,7 @@ export default function UpdatePasswordForm({
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="password" value="New Password" />
+                    <InputLabel htmlFor="password" className={"font-khmer"} value="ពាក្យសម្ងាត់ថ្មី" />
 
                     <TextInput
                         id="password"
@@ -104,8 +104,9 @@ export default function UpdatePasswordForm({
 
                 <div>
                     <InputLabel
+                      className={"font-khmer"}
                         htmlFor="password_confirmation"
-                        value="Confirm Password"
+                        value="បញ្ជាក់ពាក្យសម្ងាត់ថ្មី"
                     />
 
                     <TextInput
@@ -125,8 +126,8 @@ export default function UpdatePasswordForm({
                     />
                 </div>
 
-                <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                <div className="flex items-center gap-4 font-khmer">
+                    <PrimaryButton disabled={processing}>រក្សារទុក</PrimaryButton>
 
                     <Transition
                         show={recentlySuccessful}
@@ -135,8 +136,8 @@ export default function UpdatePasswordForm({
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                            Saved.
+                        <p className="text-sm text-gray-600 dark:text-gray-400 font-khmer">
+                            រក្សារទុក
                         </p>
                     </Transition>
                 </div>

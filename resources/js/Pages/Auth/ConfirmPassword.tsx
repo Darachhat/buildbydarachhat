@@ -23,14 +23,13 @@ export default function ConfirmPassword() {
         <GuestLayout>
             <Head title="Confirm Password" />
 
-            <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                This is a secure area of the application. Please confirm your
-                password before continuing.
+            <div className="mb-4 text-sm text-gray-600 font-khmer dark:text-gray-400">
+              នេះគឺជាតំបន់សុវត្ថិភាពនៃកម្មវិធី។ សូមបញ្ជាក់ពាក្យសម្ងាត់របស់អ្នក មុនពេលបន្ត។
             </div>
 
             <form onSubmit={submit}>
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                <div className="mt-4 font-khmer">
+                    <InputLabel htmlFor="password" value="ពាក្យសម្ងាត់" />
 
                     <TextInput
                         id="password"
@@ -45,9 +44,9 @@ export default function ConfirmPassword() {
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div className="mt-4 flex items-center justify-end">
+                <div className="mt-4 flex items-center font-khmer justify-end">
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Confirm
+                        យល់ព្រម
                     </PrimaryButton>
                 </div>
             </form>

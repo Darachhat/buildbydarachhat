@@ -16,33 +16,29 @@ export default function VerifyEmail({ status }: { status?: string }) {
         <GuestLayout>
             <Head title="Email Verification" />
 
-            <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                Thanks for signing up! Before getting started, could you verify
-                your email address by clicking on the link we just emailed to
-                you? If you didn't receive the email, we will gladly send you
-                another.
+            <div className="mb-4 text-sm font-khmer text-gray-600 dark:text-gray-400">
+              អរគុណសម្រាប់ការចុះឈ្មោះ! មុនពេលចាប់ផ្តើម តើអ្នកអាចផ្ទៀងផ្ទាត់អាសយដ្ឋានអ៊ីមែលរបស់អ្នកដោយចុចលើតំណដែលយើងទើបតែផ្ញើទៅអ្នកបានទេ? ប្រសិនបើអ្នកមិនបានទទួលអ៊ីមែលទេ យើងនឹងរីករាយផ្ញើទៅអ្នកម្តងទៀត។
             </div>
 
             {status === 'verification-link-sent' && (
-                <div className="mb-4 text-sm font-medium text-green-600 dark:text-green-400">
-                    A new verification link has been sent to the email address
-                    you provided during registration.
+                <div className="mb-4 text-sm font-khmer font-medium text-green-600 dark:text-green-400">
+                  តំណផ្ទៀងផ្ទាត់ថ្មីមួយត្រូវបានផ្ញើទៅកាន់អាសយដ្ឋានអ៊ីមែលដែលអ្នកបានផ្តល់អំឡុងពេលចុះឈ្មោះ។
                 </div>
             )}
 
             <form onSubmit={submit}>
-                <div className="mt-4 flex items-center justify-between">
+                <div className="mt-4 flex font-khmer items-center font-khmer justify-between">
                     <PrimaryButton disabled={processing}>
-                        Resend Verification Email
+                      ផ្ញើអ៊ីមែលផ្ទៀងផ្ទាត់ឡើងវិញ
                     </PrimaryButton>
 
                     <Link
                         href={route('logout')}
                         method="post"
                         as="button"
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
+                        className="rounded-md font-khmer text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
                     >
-                        Log Out
+                        ចាកចេញ
                     </Link>
                 </div>
             </form>

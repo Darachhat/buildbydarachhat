@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\MediaCollection;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Product extends Model implements HasMedia
@@ -128,13 +128,13 @@ class Product extends Model implements HasMedia
             $options = VariationTypeOption::whereIn('id', $optionIds)->get();
 
             foreach ($options as $option) {
-                $image = $option->getFirstMediaUrl('images', 'small');
+                $image = $option->getMedia('images');
                 if ($image) {
                     return $image;
                 }
             }
         }
-        return $this->getFirstMediaUrl('images', 'small');
+        return $this->getMedia('images');
     }
 
     public function getPriceForFirstOptions(): float
@@ -161,7 +161,7 @@ class Product extends Model implements HasMedia
         return $this->getFirstMediaUrl($collectionName, $conversion);
     }
 
-    public function getImages(): \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection
+    public function getImages(): MediaCollection
     {
         if ($this->options->count() > 0) {
             foreach ($this->options() as $option) {

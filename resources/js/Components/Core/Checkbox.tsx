@@ -8,7 +8,7 @@ export default function Checkbox({
         <input
             {...props}
             type="checkbox"
-            className={ 'checkbox text-white checkbox-info' + className }
+            className={ 'checkbox text-white checkbox-success' + className }
         />
     );
 }

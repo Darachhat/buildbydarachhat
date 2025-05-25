@@ -17,16 +17,18 @@ function Index(
     <AuthenticatedLayout>
       <Head title="Your Cart"/>
 
-      <div className={"container mx-auto p-8 flex flex-col lg:flex-row gap-4"}>
+      <div className={"container mx-auto flex flex-col lg:flex-row gap-4"}>
 
         <div className={"card flex-1 bg-white dark:bg-gray-800 order-2 lg:order-1"}>
           <div className={"card-body"}>
-            <h2 className={"text-lg font-bold"}>Shopping Cart</h2>
+            <h2 className={"text-lg font-bold font-khmer"}>
+              កន្ទ្រកទំនិញ{/*Shopping Cart*/}
+            </h2>
 
             <div className={"my-4"}>
               {Object.keys(cartItems).length === 0 && (
                 <div className={'py-2 text-gray-500 text-center'}>
-                  You don't have any items yet.
+                  អ្នកមិនទាន់មានទំនិញក្នុងកន្ទ្រកនោះទេ{/*You don't have any items yet.*/}
                 </div>
               )}
               {Object.values(cartItems).map(cartItems => (
@@ -40,9 +42,9 @@ function Index(
                         <form action={route('cart.checkout')} method="post">
                           <input type="hidden" name="_token" value={csrf_token}/>
                           <input type="hidden" name="vendor_id" value={cartItems.user.id}/>
-                          <button className="btn btn-sm btn-ghost">
+                          <button className="btn btn-sm btn-ghost font-khmer">
                             <CreditCardIcon className="size-6" />
-                            Pay Only for this seller
+                            បង់ប្រាក់សម្រាប់តែអ្នកលក់ម្នាក់នេះប៉ុណ្ណោះ
                           </button>
                         </form>
                       </div>
@@ -62,9 +64,9 @@ function Index(
             <CurrencyFormatter amount={totalPrice} locale={"en-US"} />
             <form action={route('cart.checkout')} method="post">
               <input type="hidden" name="_token" value={csrf_token}/>
-              <PrimaryButton className="rounded-full">
+              <PrimaryButton className="rounded-full font-khmer">
                 <CreditCardIcon className="size-6" />
-                Proceed to checkout
+                បន្តទៅការទូទាត់
               </PrimaryButton>
             </form>
           </div>

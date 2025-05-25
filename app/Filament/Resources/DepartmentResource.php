@@ -80,6 +80,7 @@ class DepartmentResource extends Resource
         ];
     }
 
+
     public static function canViewAny(): bool
     {
         $user =  Filament::auth()->user();

@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Enums\RolesEnum;
+use App\Http\Controllers\Admin\DashboardController;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -25,6 +26,7 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->font('Noto Sans Khmer')
             ->default()
             ->id('admin')
             ->path('admin')
