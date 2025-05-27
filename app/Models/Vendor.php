@@ -4,12 +4,17 @@ namespace App\Models;
 
 use App\Enums\VendorStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Notifications\Notifiable;
+use SimonHamp\LaravelStripeConnect\Traits\Payable;
+use Spatie\Permission\Traits\HasRoles;
 
 class Vendor extends Model
 {
     // added this
+    use HasFactory, Notifiable, HasRoles, Payable;
 
     protected $primaryKey = 'user_id';
 

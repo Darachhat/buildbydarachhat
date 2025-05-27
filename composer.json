@@ -12,6 +12,7 @@
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
+        "laravel/socialite": "^5.20",
         "laravel/tinker": "^2.10.1",
         "simonhamp/laravel-stripe-connect": "^0.5.0",
         "spatie/laravel-permission": "^6.16",
