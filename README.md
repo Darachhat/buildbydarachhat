@@ -1,7 +1,10 @@
-# BuiltByDarachhat គឺជាវេបសាយអ៊ីសម្រាប់ទិញលក់ផលិតផលថ្មីឬមួយទឹកលើអ៊ីនធឺណិត (C2C E-commerce Web Application)  
+# BuiltByDarachhat គឺជាវេបសាយអ៊ីសម្រាប់ទិញលក់ផលិតផលថ្មីឬមួយទឹកលើអ៊ីនធឺណិត 
 ![image](https://github.com/user-attachments/assets/e2e852e8-114a-4358-9f01-68d93e0a768b)
 
 🌐 **Live Demo:** [https://www.buildbydarachhat.social/](https://www.buildbydarachhat.social/)
+
+> **Short Description**  
+> Modern C2C e-commerce web application built with Laravel (PHP), React (TypeScript), and Tailwind CSS. Developed extensive user, vendor, and admin features, including role-based access control, real-time product management, secure authentication, and payment integration. Demonstrates strong skills in full-stack development, modern web architecture, and scalable system design.
 
 អំពីបច្ចេកវិទ្យាដែលខ្ងុំប្រើប្រាស់និង មុខងារដែលមានគឺបានបង្ហាញនៅក្រោមអាចជួយដល់អ្នកអភិវឌ្ឍន៍ អ្នករួមចំណែក និងអ្នកប្រើប្រាស់យល់បានយ៉ាងរហ័សនូវបច្ចេកវិទ្យាអ្វីដែលបានប្រើ មុខងារអ្វីដែលមាននៅក្នុងគម្រោងនេះ ដែលនិងធ្វើឱ្យការថែទាំ ឬកិច្ចសហការនាពេលអនាគតដើម្បីអភិវឌ្ឍន៍កាន់តែងាយស្រួល
 
