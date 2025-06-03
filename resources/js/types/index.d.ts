@@ -11,6 +11,7 @@ export interface User {
       store_label: string;
       store_name: string;
       store_address: string;
+      telegram_link: string;
       cover_image: string;
     }
 }
@@ -52,6 +53,7 @@ export type Product = {
     id: number;
     name: string;
     store_name: string;
+    telegram_link: string;
   };
   department: {
     id: number;
@@ -137,6 +139,7 @@ export type Order = {
     email: string;
     store_name: string;
     store_address: string;
+    telegram_link: string;
   };
   orderItems: OrderItem[];
 }
@@ -145,6 +148,7 @@ export type Vendor = {
   id: number;
   store_name: string;
   store_address: string;
+  telegram_link: string;
 }
 
 export type Category = {

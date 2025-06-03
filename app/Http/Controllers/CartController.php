@@ -132,6 +132,7 @@ class CartController extends Controller
 
                 // Create order items and Stripe line items
                 foreach ($cartItems as $cartItem) {
+
                     // Save order item
                     OrderItem::create([
                         'order_id' => $order->id,
@@ -140,6 +141,7 @@ class CartController extends Controller
                         'price' => $cartItem['price'],
                         'variation_type_option_ids' => $cartItem['option_ids'],
                     ]);
+                    Log::info('CartItem price', ['price' => $cartItem['price']]);
 
                     // Build a human-readable description of selected options
                     $description = collect($cartItem['options'])->map(function ($item) {
@@ -166,6 +168,12 @@ class CartController extends Controller
                     $lineItems[] = $lineItem;
                 }
             }
+            if (empty($lineItems)) {
+                throw new \Exception("Your cart is empty or something went wrong preparing your order.");
+            }
+
+            Log::info('Stripe lineItems', ['line_items' => $lineItems]);
+            Log::info('User Email', ['customer_email' => $request->user()->email]);
 
             // Create Stripe checkout session
             $session = \Stripe\Checkout\Session::create([
@@ -181,6 +189,7 @@ class CartController extends Controller
                 $order->session_id = $session->id;
                 $order->save();
             }
+            Log::info('Stripe session', ['session_id' => $session->id]);
 
             DB::commit(); // Commit the transaction
 

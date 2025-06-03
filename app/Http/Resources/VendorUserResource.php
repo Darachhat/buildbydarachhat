@@ -20,6 +20,7 @@ class VendorUserResource extends JsonResource
             'email' => $this->email,
             'store_name' => $this->vendor->store_name,
             'store_address' => $this->vendor->store_address,
+            'telegram_link' => $this->vendor->telegram_link,
         ];
     }
 }

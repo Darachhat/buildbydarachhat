@@ -3,6 +3,7 @@ import {Head} from "@inertiajs/react";
 import React from "react";
 import {PageProps, PaginationProps, Product, Vendor} from "@/types";
 import ProductItem from "@/Components/App/ProductItem";
+import {PaperAirplaneIcon} from "@heroicons/react/24/solid";
 
 function Profile({
                   vendor,
@@ -23,9 +24,17 @@ function Profile({
         <div className={"hero-content text-neutral-content text-center"}>
           <div className={"max-w-md"}>
             <h1 className={"mb-5 text-5xl font-bold font-khmer"}>
-              {vendor.store_name}
+              {vendor.store_name}{vendor.telegram_link && (
+              <h1 className={"mb-4 text-5xl font-bold font-khmer"}>
+                <a href={vendor.telegram_link} target="_blank" rel="noopener noreferrer">
+                 <p className={"text mt-3 text-info text-sm"}>{vendor.telegram_link}</p>
+                </a>
+              </h1>
+            )}
             </h1>
+
           </div>
+
         </div>
       </div>
 

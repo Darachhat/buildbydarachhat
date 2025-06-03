@@ -32,6 +32,7 @@ class AuthUserResource extends JsonResource
                 'status_label' => VendorStatusEnum::from($this->vendor->status)->label(),
                 'store_name' => $this->vendor->store_name,
                 'store_address' => $this->vendor->store_address,
+                'telegram_link' => $this->vendor->telegram_link,
                 'cover_image' => $this->vendor->cover_image,
             ]
         ];

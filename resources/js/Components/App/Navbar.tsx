@@ -66,9 +66,9 @@ function Navbar() {
 
           {user ? (
             <div className="dropdown dropdown-end">
-              <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+              <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar avatar-online">
                 <div className="w-10 rounded-full">
-                  <img alt="Profile" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                  <img alt="Profile" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKNwJz-vhaZVskyf7rLnoAVlsZSQz7oYkA4XrR_-PD53HLb1-UT2IC4q6V-s_rmPrelMo&usqp=CAU" />
                 </div>
               </div>
               <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow">

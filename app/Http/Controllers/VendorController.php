@@ -44,6 +44,7 @@ class VendorController extends Controller
                     ->ignore($user->id, 'user_id'),
             ],
             'store_address' => 'nullable',
+            'telegram_link' => 'nullable|string|max:255',
         ],[
             'store_name.regex' => 'Store Name must only contain lowercase alphanumeric characters and dashes',
         ]);
@@ -53,6 +54,7 @@ class VendorController extends Controller
         $vendor->status = VendorStatusEnum::Approved->value;
         $vendor->store_name = $request->store_name;
         $vendor->store_address = $request->store_address;
+        $vendor->telegram_link = $request->telegram_link;
         $vendor->save();
 
         $user->assignRole(RolesEnum::Vendor);

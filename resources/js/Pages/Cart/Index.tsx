@@ -26,6 +26,7 @@ function Index(
             </h2>
 
             <div className={"my-4"}>
+
               {Object.keys(cartItems).length === 0 && (
                 <div className={'py-2 text-gray-500 text-center'}>
                   អ្នកមិនទាន់មានទំនិញក្នុងកន្ទ្រកនោះទេ{/*You don't have any items yet.*/}

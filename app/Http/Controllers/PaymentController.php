@@ -50,6 +50,10 @@ class PaymentController extends Controller
     // Handles incoming Stripe webhook events
     public function webhook(Request $request)
     {
+        Log::info('Stripe webhook received.', [
+            'method' => $request->method(),
+            'payload' => $request->getContent(),
+        ]);
         $stripe = new \Stripe\StripeClient(config('app.stripe_secret_key')); // Initialize Stripe client
         $endpoint_secret = config('app.stripe_webhook_secret'); // Get webhook secret
 
@@ -107,7 +111,12 @@ class PaymentController extends Controller
                 }
 
                 // Notify the buyer
-                Mail::to($orders[0]->user)->send(new CheckoutCompleted($orders));
+                // In charge.updated
+                if ($orders->count() > 0) {
+                    Mail::to($orders[0]->user)->send(new CheckoutCompleted($orders));
+                } else {
+                    Log::warning('No orders found for payment_intent', ['payment_intent' => $paymentIntent]);
+                }
                 break;
 
             case 'checkout.session.completed':
@@ -156,11 +165,16 @@ class PaymentController extends Controller
                 }
 
                 // Delete purchased items from cart
-                CartItem::query()
-                    ->where('user_id', $order->user_id)
-                    ->whereIn('product_id', $productsToDeleteFromCart)
-                    ->where('saved_for_later', false)
-                    ->delete();
+                if ($orders->count() > 0) {
+                    $userId = $orders->first()->user_id;
+                    CartItem::query()
+                        ->where('user_id', $userId)
+                        ->whereIn('product_id', $productsToDeleteFromCart)
+                        ->where('saved_for_later', false)
+                        ->delete();
+                } else {
+                    Log::warning('No orders found for session_id', ['session_id' => $session['id']]);
+                }
                 break;
 
             default:

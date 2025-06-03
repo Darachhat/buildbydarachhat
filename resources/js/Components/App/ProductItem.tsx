@@ -40,6 +40,9 @@ function ProductItem({ product }: { product: Product }) {
           ផលិតផលរបស់ <Link href={route('vendor.profile', product.user.store_name)} className="text-green-600 hover:underline">{product.user.name}</Link>
           &nbsp;ក្នុងផ្នែក <Link href={route('product.byDepartment', product.department.slug)} className="text-green-600 hover:underline">{product.department.name}</Link>
         </p>
+       <p className={'font-khmer'}>
+         ទំនាក់ទំនង <a  href={product.user.telegram_link} target="_blank" rel="noopener noreferrer" className="text-info hover:underline">Telegram</a>
+       </p>
         <div className="card-actions items-center justify-between grid-cols-1 grid mt-3">
           <span className="text-2xl text-center">
         <CurrencyFormatter amount={product.price} locale="en-US" />

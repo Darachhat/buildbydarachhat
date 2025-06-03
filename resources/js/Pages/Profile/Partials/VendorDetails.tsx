@@ -26,7 +26,8 @@ export default function VendorDetails(
     recentlySuccessful,
   } = useForm({
     store_name: user.vendor?.store_name || user.name.toLowerCase().replace(/\s+/g, "-"),
-    store_address: user.vendor?.store_address
+    store_address: user.vendor?.store_address,
+    telegram_link: user.vendor?.telegram_link,
   });
 
   const onStoreNameChange = (ev: React
@@ -43,7 +44,8 @@ export default function VendorDetails(
       preserveScroll: true,
       onSuccess: () => {
         closeModal()
-        setSuccessMessage('ឥឡូវនេះ អ្នកអាចបង្កើត និងដាក់លក់ផលិតផលបាន')
+        setSuccessMessage('ដាក់លក់ផលិតផលបាន')
+
       },
       onError: (errors) => {
 
@@ -58,7 +60,7 @@ export default function VendorDetails(
       preserveScroll: true,
       onSuccess: () => {
         closeModal()
-        setSuccessMessage('ព័ត៌មានលម្អិតរបស់អ្នកត្រូវបានធ្វើបច្ចុប្បន្នភាព')
+        setSuccessMessage('បានធ្វើបច្ចុប្បន្នភាព')
       },
       onError: (errors) => {
 
@@ -80,12 +82,12 @@ export default function VendorDetails(
       <header>
         <h2 className="grid grid-cols-1 justify-center mb-8 text-lg font-medium text-gray-900 dark:text-gray-100">
           ព័ត៌មានលម្អិតអំពីអ្នកលក់
-          {user.vendor?.status === 'pending' &&
-          <span className={'badge badge-warning p-4 mt-2 font-khmer'}>{user.vendor.store_label}សូមរង់ចាំ</span>}
-          {user.vendor?.status === 'rejected' &&
-          <span className={'badge badge-error p-4 mt-2 font-khmer'}>{user.vendor.store_label}បានបដិសេដ</span>}
-          {user.vendor?.status === 'approved' &&
-            <span className={'badge border border-success p-4 mt-2 text-success badge-white font-khmer'}>{user.vendor.store_label}បានអនុម័ត <CheckBadgeIcon className="w-4 h-4" /> </span>}
+        {/*  {user.vendor?.status === 'pending' &&*/}
+        {/*  <span className={'badge badge-warning p-4 mt-2 font-khmer'}>{user.vendor.store_label}សូមរង់ចាំ</span>}*/}
+        {/*  {user.vendor?.status === 'rejected' &&*/}
+        {/*  <span className={'badge badge-error p-4 mt-2 font-khmer'}>{user.vendor.store_label}បានបដិសេដ</span>}*/}
+        {/*  {user.vendor?.status === 'approved' &&*/}
+        {/*    <span className={'badge border border-success p-4 mt-2 text-success badge-white font-khmer'}>{user.vendor.store_label}បានអនុម័ត <CheckBadgeIcon className="w-4 h-4" /> </span>}*/}
         </h2>
       </header>
 
@@ -99,7 +101,7 @@ export default function VendorDetails(
           <>
             <form onSubmit={updateVendor}>
               <div  className="flex justify-start mb-6">
-                <Link href="/admin" className="btn bg-orange-600 hover:bg-orange-300 hover:text-gray-700 text-gray-200"><ArrowRightOnRectangleIcon className={'w-4 h-4'}/> ទៅកាន់ផ្ទាំងអ្នកលក់</Link>
+                <Link href="/admin" className="btn bg-black/50 hover:bg-gray-500 hover:text-white-700 text-gray-200"><ArrowRightOnRectangleIcon className={'w-4 h-4'}/> Admin</Link>
               </div>
               <div className="mb-4">
                 <InputLabel htmlFor="name" value="ឈ្មោះហាង"/>
@@ -116,6 +118,16 @@ export default function VendorDetails(
 
                 <InputError className="mt-2" message={errors.store_name}/>
               </div>
+              <InputLabel htmlFor="telegram_link" value="Telegram Link" />
+              <TextInput
+                id="telegram_link"
+                className="mt-1 block w-full"
+                value={data.telegram_link}
+                onChange={(e) => setData('telegram_link', e.target.value)}
+                placeholder="https://t.me"
+              />
+              <InputError className="mt-2" message={errors.telegram_link} />
+
               <div className="mb-4">
                 <InputLabel htmlFor="name" value="អាសយដ្ឋានហាង"/>
 
@@ -131,17 +143,17 @@ export default function VendorDetails(
                 <PrimaryButton disabled={processing}>ធ្វើបច្ចុប្បន្នភាព</PrimaryButton>
               </div>
             </form>
-            <form action={route('stripe.connect')} method={'post'} className={'my-8'}>
-              <input type="hidden" name="_token" value={token}/>
-              {user.stripe_account_active && (
-                <div className={"text-center text-gray-600 my-4 text-sm"}>
-                  អ្នកត្រូវបានភ្ជាប់ទៅកាន់គណនី Stripe របស់អ្នកដោយជោគជ័យ
-                </div>
-              )}
-              <button className="btn btn-success text-white text-sm w-full" disabled={user.stripe_account_active}>
-                ភ្ជាប់ទៅកាន់គណនី Stripe
-              </button>
-            </form>
+            {/*<form action={route('stripe.connect')} method={'post'} className={'my-8'}>*/}
+            {/*  <input type="hidden" name="_token" value={token}/>*/}
+            {/*  {user.stripe_account_active && (*/}
+            {/*    <div className={"text-center text-gray-600 my-4 text-sm"}>*/}
+            {/*      អ្នកត្រូវបានភ្ជាប់ទៅកាន់គណនី Stripe របស់អ្នកដោយជោគជ័យ*/}
+            {/*    </div>*/}
+            {/*  )}*/}
+            {/*  <button className="btn btn-success text-white text-sm w-full" disabled={user.stripe_account_active}>*/}
+            {/*    ភ្ជាប់ទៅកាន់គណនី Stripe*/}
+            {/*  </button>*/}
+            {/*</form>*/}
           </>
         )}
       </div>
