@@ -1,66 +1,150 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# BuiltByDarachhat គឺជាវេបសាយអ៊ីសម្រាប់ទិញលក់ផលិតផលថ្មីឬមួយទឹកលើអ៊ីនធឺណិត 
+![image](https://github.com/user-attachments/assets/e2e852e8-114a-4358-9f01-68d93e0a768b)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+🌐 **Live Demo:** [https://www.buildbydarachhat.social/](https://www.buildbydarachhat.social/)
 
-## About Laravel
+> **Short Description**  
+> Modern C2C e-commerce web application built with Laravel (PHP), React (TypeScript), and Tailwind CSS. Developed extensive user, vendor, and admin features, including role-based access control, real-time product management, secure authentication, and payment integration. Demonstrates strong skills in full-stack development, modern web architecture, and scalable system design.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+អំពីបច្ចេកវិទ្យាដែលខ្ងុំប្រើប្រាស់និង មុខងារដែលមានគឺបានបង្ហាញនៅក្រោមអាចជួយដល់អ្នកអភិវឌ្ឍន៍ អ្នករួមចំណែក និងអ្នកប្រើប្រាស់យល់បានយ៉ាងរហ័សនូវបច្ចេកវិទ្យាអ្វីដែលបានប្រើ មុខងារអ្វីដែលមាននៅក្នុងគម្រោងនេះ ដែលនិងធ្វើឱ្យការថែទាំ ឬកិច្ចសហការនាពេលអនាគតដើម្បីអភិវឌ្ឍន៍កាន់តែងាយស្រួល
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Frontend:**
+- React (TypeScript, Inertia.js)
+- Tailwind CSS (with daisyUI for UI components)
+- DaisyUI
+- [Vite](https://vitejs.dev/) (for rapid development & HMR)
 
-## Learning Laravel
+**Backend:**
+- Laravel (PHP)
+- MySQL (or other DB as configured)
+- Filament Admin Panel
+- Spatie Laravel Permission (RBAC)
+- Laravel Stripe Connect (payment integration)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**Other:**
+- Blade (for some server-rendered views)
+- Inertia.js (bridges Laravel & React)
+- Redis, Memcached, SQS (Queue & Cache drivers)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Features
+> ⚡️ **Notice:** Features កំពុងត្រូវបានអភិវឌ្ឍ និងកែលម្អជាបន្តបន្ទាប់ដូចជា Payment method និងសមត្ថភាពវិភាគទនិ្នន័យសម្រាប់ អ្នកប្រើប្រាស់ អ្នកលក់ និងអ្នកគ្រប់គ្រង នឹងត្រូវបន្ថែមនាពេលអនាគត
 
-## Laravel Sponsors
+**User:**
+- Register and Login (Authentication)
+  ![image](https://github.com/user-attachments/assets/5ded979b-6dcb-43ad-b835-72ce792816e9)
+  ![image](https://github.com/user-attachments/assets/8e1cda32-4759-48d4-9a65-692c468bedce)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- Search, and filter products by department/category
+  ![image](https://github.com/user-attachments/assets/27abca6d-3fdc-4292-8f07-b7fa25a6237e)
 
-### Premium Partners
+- View and add products to cart
+  ![image](https://github.com/user-attachments/assets/2962728d-54d7-4e7b-8761-64d82fbb64b6)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+- Update/remove cart items
+  ![image](https://github.com/user-attachments/assets/f3a053a4-abff-4e24-9eb9-3f5e3c3ff965)
+  
+- Responsive UI
+  
+  ![image](https://github.com/user-attachments/assets/13d4d21d-5441-4da7-94db-46638c63e2cc)
+  ![image](https://github.com/user-attachments/assets/8207d8d3-dedd-4ba3-80d6-d1fc57793461)
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Vendor:**
+- Product Management
+  ![image](https://github.com/user-attachments/assets/030c2269-cf7b-40cb-b8fc-28a06c7a9d48)
 
-## Code of Conduct
+- Create Product
+  ![image](https://github.com/user-attachments/assets/6a7106fd-45ec-4d27-9f23-0bbbf616679e)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Update Product
+  ![image](https://github.com/user-attachments/assets/d13597e0-d403-494a-94b5-f6a054dd4b07)
+  ![image](https://github.com/user-attachments/assets/bcb479a4-d488-4e88-8d31-4ec74a172a3e)
+  ![image](https://github.com/user-attachments/assets/de0cb7af-876c-4c18-add7-3995c4da1724)
+  ![image](https://github.com/user-attachments/assets/f2c026ec-983d-4ae1-be55-b50ae5869230)
 
-## Security Vulnerabilities
+**Admin:**
+- Department Management
+  ![image](https://github.com/user-attachments/assets/1edd9a22-4ec8-4c47-aa39-24c83da5c381)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Create Department
+  ![image](https://github.com/user-attachments/assets/c9192230-4cd2-4e3d-bd19-b44fb25c1c7f)
+
+- Update Department
+  ![image](https://github.com/user-attachments/assets/d19c8529-bc57-4670-829e-80b5cdcdab9e)
+
+- Category Management
+  ![image](https://github.com/user-attachments/assets/cf0b2941-2f8e-4167-9cf5-44079315d9f6)
+
+- Create Category
+  ![image](https://github.com/user-attachments/assets/3b82ee47-7719-481a-850b-82fd931a2a57)
+
+- Update Category
+  ![image](https://github.com/user-attachments/assets/77336d24-63fb-49dc-a53e-d31699e0cf38)
+
+
+**General:**
+- Modern, mobile-first design
+- Role-Based Access Control (RBAC)
+- Fast and secure (CSRF protection, modern Laravel security practices)
+- RESTful API architecture
+- Server-side and client-side validation
+
+
+## Getting Started
+
+### Prerequisites
+- PHP 8.2+
+- Node.js 18+
+- Composer
+- MySQL (or compatible DB)
+- Redis/Memcached (optional for cache/queue)
+
+### Installation
+
+1. Clone the repo:
+    ```bash
+    git clone https://github.com/Darachhat/buildbydarachhat.git
+    cd buildbydarachhat
+    ```
+
+2. Install PHP dependencies:
+    ```bash
+    composer install
+    ```
+
+3. Install JS dependencies:
+    ```bash
+    npm install
+    ```
+
+4. Copy `.env.example` to `.env` and configure your environment variables.
+
+5. Generate application key:
+    ```bash
+    php artisan key:generate
+    ```
+
+6. Run migrations and seeders:
+    ```bash
+    php artisan migrate --seed
+    ```
+
+7. Start development servers:
+    ```bash
+    php artisan serve
+    npm run dev
+    ```
+
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Licensed under the MIT License.
+
+---
+
+> Inspired by [RuppCare](https://github.com/Darachhat/RuppCare)
