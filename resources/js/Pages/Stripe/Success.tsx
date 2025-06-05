@@ -10,7 +10,7 @@ function Success({orders}: PageProps<{ orders: Order[] }>) {
     <AuthenticatedLayout>
       <Head title={"Payment was Completed"} />
 
-      <div className={"w-[480px] mx-auto py-8 px-4"}>
+      <div className={"w-[480px] mx-auto py-8 font-khmer px-4"}>
         <div className={"flex flex-col gap-2 items-center"}>
           <div className={"text-6xl text-emerald-600"}>
             <CheckCircleIcon className={"size-24"}/>
@@ -37,7 +37,7 @@ function Success({orders}: PageProps<{ orders: Order[] }>) {
             </div>
             <div className={"flex justify-between mb-2"}>
               <div className={"text-gray-400"}>
-                Order Number
+                លេខបញ្ជាទិញ
               </div>
               <div>
                 <Link href="#" className={"hover:underline"}>#{order.id}</Link>
@@ -45,26 +45,26 @@ function Success({orders}: PageProps<{ orders: Order[] }>) {
             </div>
             <div className={"flex justify-between mb-3"}>
               <div className={"text-gray-400"}>
-                Items
+                ទំនិញ
               </div>
               <div>
                 {order.orderItems.length}
               </div>
             </div>
             <div className={"flex justify-between mb-3"}>
-              <div className={"text-gray-400"}>
-                Total
+              <div className={"text-gray-400 font-khmer"}>
+                សរុប
               </div>
               <div>
                 <CurrencyFormatter amount={order.total_price} />
               </div>
             </div>
-            <div className={"flex justify-between mt-4"}>
-              <Link href="#" className={"btn btn-primary"}>
-                View Order Details
+            <div className={"flex font-khmer justify-between mt-4"}>
+              <Link href={route('orders.show', order.id)} className={"btn btn-primary"}>
+                ព័ត៏មានការបញ្ជាទិញលម្អិត
               </Link>
               <Link href={route('dashboard')} className={"btn"}>
-                Back to Home
+                ត្រលប់ទៅកាន់ទំព័រដើម
               </Link>
             </div>
           </div>
