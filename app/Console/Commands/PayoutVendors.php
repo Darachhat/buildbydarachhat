@@ -40,7 +40,7 @@ class PayoutVendors extends Command
                 ->orderBy('until', 'desc')
                 ->value('until');
 
-            $startingFrom = $startingFrom ?: Carbon::make('1975-01-01');
+            $startingFrom = $startingFrom ?: Carbon::make('1975-01-19');
 
             $until = Carbon::now()->subMonthNoOverflow()->startOfMonth();
 

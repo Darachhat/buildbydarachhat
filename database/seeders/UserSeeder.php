@@ -16,21 +16,6 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::factory()->create([
-            'name' => 'User',
-            'email' => 'user@example.com',
-        ])->assignRole(RolesEnum::User->value);
-        $user = User::factory()->create([
-            'name' => 'Vendor',
-            'email' => 'vendor@example.com',
-        ]);
-        $user->assignRole(RolesEnum::Vendor->value);
-        Vendor::factory()->create([
-           'user_id' => $user->id,
-           'status' => VendorStatusEnum::Approved,
-            'store_name' => 'Vendor  Store',
-            'store_address' => fake()->address(),
-        ]);
-        User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
         ])->assignRole(RolesEnum::Admin->value);

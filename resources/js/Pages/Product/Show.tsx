@@ -231,9 +231,10 @@ function Show({
             </Link>&nbsp;
               ក្នុងផ្នែក <Link href={route('product.byDepartment', product.department.slug)} className="text-green-600 hover:underline">{product.department.name}</Link>
             </p>
-            <p className={'font-khmer mb-6'}>
-              ទំនាក់ទំនង <Link  href={product.user.telegram_link} target="_blank" rel="noopener noreferrer" className="text-info hover:underline">Telegram</Link>
-            </p>
+            {product.user.telegram_link &&
+              <p className={'font-khmer mb-6'}>
+                ទំនាក់ទំនង <Link  href={product.user.telegram_link} target="_blank" rel="noopener noreferrer" className="text-info hover:underline">Telegram</Link>
+              </p>}
             <div>
               <div className="text-3xl mb-4 font-bold">
                 <CurrencyFormatter amount={computedProduct.price} locale={"en"}/>

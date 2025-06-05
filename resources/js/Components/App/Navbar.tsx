@@ -72,10 +72,26 @@ function Navbar() {
                 </div>
               </div>
               <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow">
-                <li><Link href={route('profile.edit')} className="font-khmer flex items-center space-x-2 px-4 py-2 hover:bg-gray-100"><UserCircleIcon className="w-5 h-5 text-gray-700" />
-                  <span>ប្រវត្តិរូប</span></Link></li>
-                <li><Link href={route('logout')} method="post" as="button" className="font-khmer flex items-center space-x-2 px-4 py-2 hover:bg-gray-100"><ArrowLeftOnRectangleIcon className="w-5 h-5" />
-                  <span>ចេញ</span></Link></li>
+                <li>
+                  <Link href={route('profile.edit')} className="font-khmer flex items-center space-x-2 px-4 py-2 hover:bg-gray-100">
+                    <UserCircleIcon className="w-5 h-5 text-gray-700" />
+                    <span>ប្រវត្តិរូប</span>
+                  </Link>
+                </li>
+                {/* NEW: Order History Link */}
+                <li>
+                  <Link href={route('orders.index')} className="font-khmer flex items-center space-x-2 px-4 py-2 hover:bg-gray-100">
+                    {/* You can use any suitable icon here, like a clipboard or receipt icon */}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="w-5 h-5 text-gray-700" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6M9 12h6m-7 5h7a2 2 0 002-2v-9a2 2 0 00-2-2h-7a2 2 0 00-2 2v9a2 2 0 002 2z" /></svg>
+                    <span>ប្រវត្តិបញ្ជាទិញ</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href={route('logout')} method="post" as="button" className="font-khmer flex items-center space-x-2 px-4 py-2 hover:bg-gray-100">
+                    <ArrowLeftOnRectangleIcon className="w-5 h-5" />
+                    <span>ចេញ</span>
+                  </Link>
+                </li>
               </ul>
             </div>
           ) : (
@@ -120,7 +136,7 @@ function Navbar() {
           </form>
 
           {/* Mini Cart for Mobile */}
-          <div className="mt-4">
+          <div className="mt-4 lg:hidden">
             <MiniCArtDropdown />
           </div>
 
@@ -141,7 +157,12 @@ function Navbar() {
                   <UserCircleIcon className="w-5 h-5 text-gray-700" />
                   <span>ប្រវត្តិរូប</span>
                 </Link>
-                <Link href={route('logout')} method="post" as="button" className="btn btn-error font-khmer">
+                {/* NEW: Order History Link (Mobile) */}
+                <Link href={route('orders.index')} className="btn btn-outline font-khmer flex items-center space-x-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="w-5 h-5 text-gray-700" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6M9 12h6m-7 5h7a2 2 0 002-2v-9a2 2 0 00-2-2h-7a2 2 0 00-2 2v9a2 2 0 002 2z" /></svg>
+                  <span>ប្រវត្តិបញ្ជាទិញ</span>
+                </Link>
+                <Link href={route('logout')} method="post" as="button" className="btn btn-error text-white font-khmer">
                   ចាកចេញ
                 </Link>
               </>

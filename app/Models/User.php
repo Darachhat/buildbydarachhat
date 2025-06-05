@@ -53,4 +53,21 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Vendor::class, 'user_id');
     }
+    public function products()
+    {
+        return $this->hasMany(\App\Models\Product::class, 'created_by');
+    }
+
+// As a vendor, sum income (all orders this user fulfilled as vendor)
+    public function vendorIncome()
+    {
+        return \App\Models\Order::where('vendor_user_id', $this->id)->sum('vendor_subtotal');
+    }
+
+// As a customer, sum payments (all orders this user placed)
+    public function totalPayments()
+    {
+        return \App\Models\Order::where('user_id', $this->id)->sum('total_price');
+    }
+
 }

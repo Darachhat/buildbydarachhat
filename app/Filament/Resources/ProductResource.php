@@ -30,6 +30,8 @@ use Illuminate\Support\Str;
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
+    protected static ?string $label = 'ទំនិញ';
+
 
     protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
 
@@ -193,6 +195,6 @@ class ProductResource extends Resource
     public static function canViewAny(): bool
     {
         $user =  Filament::auth()->user();
-        return $user && $user->hasRole(RolesEnum::Vendor);
+        return $user->hasRole(RolesEnum::Vendor);
     }
 }
