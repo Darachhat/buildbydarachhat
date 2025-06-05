@@ -2,7 +2,7 @@
 
 return [
 
-    'title' => 'បង្កើត :label',
+    'title' => 'បង្កើត ',
 
     'breadcrumb' => 'បង្កើត',
 
@@ -29,7 +29,7 @@ return [
     'notifications' => [
 
         'created' => [
-            'title' => 'បានបង្កើត :label បានជោគជ័យ',
+            'title' => 'បានបង្កើតបានជោគជ័យ',
         ],
 
     ],

@@ -23,13 +23,11 @@ function Show({
     option_ids: {},
     quantity: 1,
     price: null
-  })
+  });
 
   const {url} = usePage();
 
-  const [selectedOptions, setSelectedOptions] =
-    useState<Record<number, VariationTypeOption>>({});
-  // Add state to show error if quantity is exceeded
+  const [selectedOptions, setSelectedOptions] = useState<Record<number, VariationTypeOption>>({});
   const [quantityError, setQuantityError] = useState<string | null>(null);
 
   const images = useMemo(() => {
@@ -40,21 +38,50 @@ function Show({
     return product.images;
   }, [product, selectedOptions]);
 
-  const computedProduct= useMemo(() => {
+  // Helper: get price for a specific variation option (for image display)
+  const getVariationPriceForOption = (typeId: number, optionId: number) => {
+    for (let variation of product.variations) {
+      if (
+        variation.variation_type_option_ids.length === 1 &&
+        variation.variation_type_option_ids[0] === optionId
+      ) {
+        return Number(variation.price);
+      }
+    }
+    return Number(product.price);
+  };
+
+  // Helper: get quantity for a specific variation option (for image display)
+  const getVariationQtyForOption = (typeId: number, optionId: number) => {
+    for (let variation of product.variations) {
+      if (
+        variation.variation_type_option_ids.length === 1 &&
+        variation.variation_type_option_ids[0] === optionId
+      ) {
+        return variation.quantity ?? product.quantity;
+      }
+    }
+    return product.quantity;
+  };
+
+  // Compute price/quantity for selected variation
+  const computedProduct = useMemo(() => {
     const selectedOptionIds = Object.values(selectedOptions)
       .map(op => op.id)
       .sort();
+    let matchedVariation = null;
     for (let variation of product.variations) {
-      const optionIds = variation.variation_type_option_ids.sort();
+      const optionIds = variation.variation_type_option_ids.slice().sort();
       if (arraysAreEqual(selectedOptionIds, optionIds)) {
+        matchedVariation = variation;
         return {
-          price: variation.price,
+          price: Number(variation.price),
           quantity: variation.quantity === null ? Number.MAX_VALUE : variation.quantity,
-        }
+        };
       }
     }
     return {
-      price: product.price,
+      price: Number(product.price),
       quantity: product.quantity,
     };
   }, [product, selectedOptions]);
@@ -65,20 +92,21 @@ function Show({
       chooseOption(
         type.id,
         type.options.find(op => op.id == selectedOptionId) || type.options[0],
-        false,
-      )
+        false
+      );
     }
+    // eslint-disable-next-line
   }, []);
 
-  const getOptionIdsMap=
-    (newOptions: object) =>{
+  const getOptionIdsMap =
+    (newOptions: object) => {
       return Object.fromEntries(
-        Object.entries(newOptions).map(([a, b]) => [a,b.id])
-      )
-    }
+        Object.entries(newOptions).map(([a, b]) => [a, (b as VariationTypeOption).id])
+      );
+    };
 
   const chooseOption = (
-    typeId:number,
+    typeId: number,
     option: VariationTypeOption,
     updateRouter: boolean = true
   ) => {
@@ -86,27 +114,25 @@ function Show({
       const newOptions = {
         ...prevSelectedOptions,
         [typeId]: option
-      }
+      };
 
       if (updateRouter) {
         router.get(url, {
           options: getOptionIdsMap(newOptions)
         }, {
-          preserveScroll:true,
-          preserveState:true
-        })
+          preserveScroll: true,
+          preserveState: true
+        });
       }
 
       return newOptions;
-    })
-  }
-
+    });
+  };
 
   const onQuantityChange = (ev: React.ChangeEvent<HTMLSelectElement>) => {
     const val = parseInt(ev.target.value);
-    // Check if quantity exceeds stock
     if (val > computedProduct.quantity) {
-      setQuantityError('មិនអាចជ្រើសចំនួនលើសជាងស្ទុកបានទេ'); // "Cannot select more than available stock."
+      setQuantityError('មិនអាចជ្រើសចំនួនលើសជាងស្ទុកបានទេ'); // Cannot select more than in stock
       form.setData('quantity', computedProduct.quantity);
     } else {
       setQuantityError(null);
@@ -115,54 +141,95 @@ function Show({
   }
 
   const addToCart = () => {
-    // Block add to cart if quantity is more than in stock
     if (form.data.quantity > computedProduct.quantity) {
-      setQuantityError('មិនអាចបញ្ចូលចំនួនលើសស្ទុកបានទេ'); // "Cannot add more than available stock."
+      setQuantityError('មិនអាចបញ្ចូលចំនួនលើសស្ទុកបានទេ'); // Cannot add more than available stock
       return;
     }
     setQuantityError(null);
     form.post(route('cart.store', product.id), {
       preserveScroll: true,
-      preserveState:true,
+      preserveState: true,
       onError: (err) => {
         console.log(err)
       }
-    })
+    });
   }
 
+  useEffect(() => {
+    const idsMap = Object.fromEntries(
+      Object.entries(selectedOptions).map(([typeId, option]: [string, VariationTypeOption]) => [typeId, option.id])
+    );
+    form.setData('option_ids', idsMap);
+  }, [selectedOptions]);
+
+  // --- HERE is the change: price and quantity under each image ---
   const renderProductVariationTypes = () => {
-    return (
-      product.variationTypes.map((type, i) => (
-        <div key={type.id} >
-          <b>{type.name}</b>
-          {type.type === 'Image' &&
-            <div className="flex gap-2 mb-4 mt-2">
-              {type.options.map(option => (
-                <div onClick={() => chooseOption(type.id, option)} key={option.id}>
-                  {option.images && <img src={option.images[0].thumb} alt="" className={'transition-all duration-400 w-[40px] ' + (
-                    selectedOptions[type.id]?.id == option.id ? 'rounded-full outline outline-3 outline-gray-400': ''
-                  )} />}
-                </div>
-              ))}
-            </div>}
-          {type.type === 'Radio' &&
-            <div className="flex mb-4 gap-2 join-horizontal mt-2">
-              {type.options.map(option => (
-                <input
-                  onChange={() => chooseOption(type.id, option)}
+    return product.variationTypes.map((type) => (
+      <div key={type.id} className="font-khmer mb-6">
+        <b className="block mb-2 text-gray-800 text-lg">{type.name}</b>
+        {type.type === "Image" && (
+          <div className="flex flex-wrap gap-4 mb-4 mt-2">
+            {type.options.map((option) => {
+              const selected = selectedOptions[type.id]?.id == option.id;
+              return (
+                <div
                   key={option.id}
-                  className={"join-item btn " + (selectedOptions[type.id]?.id == option.id ? 'bg-gray-500 outline-none text-white' : '')}
-                  type="radio"
-                  value={option.id}
-                  checked={selectedOptions[type.id]?.id === option.id}
-                  name={'variation_type_' + type.id}
-                  aria-label={option.name}/>
-              ))}
-            </div>}
-        </div>
-      ))
-    )
-  }
+                  className={
+                    "flex flex-col items-center p-2 rounded-lg transition-all cursor-pointer border " +
+                    (selected
+                      ? "border-green-500 shadow-lg bg-white"
+                      : "border-gray-200 hover:shadow-md bg-gray-50")
+                  }
+                  style={{ width: 90 }}
+                  onClick={() => chooseOption(type.id, option)}
+                >
+                  {option.images && (
+                    <img
+                      src={option.images[0].thumb}
+                      alt={option.name}
+                      className={
+                        "w-14 h-14 object-cover rounded-full border-2 " +
+                        (selected
+                          ? "border-green-500"
+                          : "border-gray-300 hover:border-green-400")
+                      }
+                    />
+                  )}
+                  <span className="mt-2 font-semibold text-green-700">
+                  <CurrencyFormatter
+                    amount={getVariationPriceForOption(type.id, option.id)}
+                    locale="en"
+                  />
+                </span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+        {type.type === "Radio" && (
+          <div className="flex mb-4 gap-2 join-horizontal mt-2">
+            {type.options.map((option) => (
+              <input
+                onChange={() => chooseOption(type.id, option)}
+                key={option.id}
+                className={
+                  "join-item btn " +
+                  (selectedOptions[type.id]?.id == option.id
+                    ? "bg-green-500 border-success text-white"
+                    : "")
+                }
+                type="radio"
+                value={option.id}
+                checked={selectedOptions[type.id]?.id === option.id}
+                name={"variation_type_" + type.id}
+                aria-label={option.name}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    ));
+  };
 
   const renderAddToCartButton = () => {
     return (
@@ -171,11 +238,15 @@ function Show({
           <select
             value={form.data.quantity}
             onChange={onQuantityChange}
-            className="select select-bordered w-full">
+            className="select select-bordered w-full"
+            disabled={computedProduct.quantity === 0}
+          >
             {Array.from({
               length: Math.min(10, computedProduct.quantity)
-            }).map((el, i) => (
-              <option className={"font-khmer"} key={i + 1} value={i + 1}>ចំនួន: {i + 1}</option>
+            }).map((_, i) => (
+              <option className="font-khmer" key={i + 1} value={i + 1}>
+                ចំនួន: {i + 1}
+              </option>
             ))}
           </select>
           <button
@@ -186,20 +257,12 @@ function Show({
             បញ្ចូលទៅក្នុងកន្ទ្រក
           </button>
         </div>
-        {/* Show error if trying to add more than quantity */}
-        {quantityError &&
+        {quantityError && (
           <div className="text-red-600 font-khmer mt-2">{quantityError}</div>
-        }
+        )}
       </div>
-    )
-  }
-
-  useEffect(() => {
-    const idsMap = Object.fromEntries(
-      Object.entries(selectedOptions).map(([typeId, option]: [string, VariationTypeOption]) => [typeId, option.id])
-    )
-    form.setData('option_ids', idsMap)
-  }, [selectedOptions]);
+    );
+  };
 
   return (
     <AuthenticatedLayout>
@@ -221,45 +284,69 @@ function Show({
           <div className="col-span-7">
             <Carousel images={images} />
           </div>
-          <div className="col-span-5">
-            <h1 className="text-2xl">{product.title}</h1>
-            <p className={" mt-2 font-khmer"}>
-              ផលិតផលរបស់ <Link
-              href={route('vendor.profile', product.user.store_name )}
-              className="text-green-600 hover:underline font-khmer">
-              {product.user.name}
-            </Link>&nbsp;
-              ក្នុងផ្នែក <Link href={route('product.byDepartment', product.department.slug)} className="text-green-600 hover:underline">{product.department.name}</Link>
-            </p>
-            {product.user.telegram_link &&
-              <p className={'font-khmer mb-6'}>
-                ទំនាក់ទំនង <Link  href={product.user.telegram_link} target="_blank" rel="noopener noreferrer" className="text-info hover:underline">Telegram</Link>
-              </p>}
-            <div>
-              <div className="text-3xl mb-4 font-bold">
-                <CurrencyFormatter amount={computedProduct.price} locale={"en"}/>
+          <div className="col-span-7 lg:col-span-5">
+            <div className="bg-white rounded-2xl shadow p-6">
+              <h1 className="text-3xl font-bold text-gray-800 mb-2">{product.title}</h1>
+              <p className="mb-1 mt-2 text-sm font-khmer text-gray-600">
+                ផលិតផលរបស់{' '}
+                <Link
+                  href={route('vendor.profile', product.user.store_name)}
+                  className="text-green-600 hover:underline font-bold"
+                >
+                  {product.user.name}
+                </Link>
+                &nbsp;ក្នុងផ្នែក{' '}
+                <Link
+                  href={route('product.byDepartment', product.department.slug)}
+                  className="text-green-600 hover:underline"
+                >
+                  {product.department.name}
+                </Link>
+              </p>
+              {product.user.telegram_link && (
+                <p className="font-khmer mb-5 text-xs text-gray-500">
+                  ទំនាក់ទំនង{' '}
+                  <Link
+                    href={product.user.telegram_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:underline"
+                  >
+                    Telegram
+                  </Link>
+                </p>
+              )}
+
+              <div className="flex items-center gap-2 mb-4">
+                <div className="text-4xl font-extrabold text-green-700">
+                  <CurrencyFormatter amount={computedProduct.price} locale={"en"} />
+                </div>
+                {computedProduct.quantity > 0 && computedProduct.quantity < 10 && (
+                  <span className="ml-3 px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-semibold">
+          ចំនួននៅសល់ {computedProduct.quantity}
+        </span>
+                )}
+                {computedProduct.quantity === 0 && (
+                  <span className="ml-3 px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold">
+          ផលិតផលអស់ស្ទុក
+        </span>
+                )}
+              </div>
+
+              <div className="mb-5">{renderProductVariationTypes()}</div>
+
+              {computedProduct.quantity > 0 && (
+                <div className="mb-6">{renderAddToCartButton()}</div>
+              )}
+
+              <div className="mb-2 border-t pt-4">
+                <b className="text-xl font-khmer block mb-2 text-gray-800">អំពីផលិតផលនេះ</b>
+                <div
+                  className="wysiwyg-output font-khmer prose prose-green max-w-none"
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                />
               </div>
             </div>
-            {renderProductVariationTypes()}
-            {computedProduct.quantity > 0 &&
-              computedProduct.quantity < 10  &&
-              <div className="my-4 text-red-600">
-                <span className={"font-khmer"}>ចំនួននៅសល់តែ {computedProduct.quantity} ប៉ុណ្ណោះ</span>
-              </div>
-            }
-            {computedProduct.quantity != undefined &&
-              computedProduct.quantity == 0 &&
-              <div className="my-4 text-red-600">
-                <span className={"font-khmer"}>ផលិតផលបានលក់អស់ក្នុងស្ទុក</span>
-              </div>
-            }
-
-            {computedProduct.quantity > 0 &&
-              renderAddToCartButton()
-            }
-
-            <b className="text-xl font-khmer">អំពីផលិតផលនេះ</b>
-            <div className="wysiwyg-output font-khmer" dangerouslySetInnerHTML={{__html: product.description}}/>
           </div>
         </div>
       </div>
