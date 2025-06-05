@@ -141,10 +141,5 @@
 
 ---
 
-## License
 
-Licensed under the MIT License.
-
----
-
-> Inspired by [RuppCare](https://github.com/Darachhat/RuppCare)
+> Inspired by [TOS](https://github.com/Darachhat/online-clothing-store)
