@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-// Import required classes
 use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\Product;
@@ -12,23 +11,31 @@ use App\Services\CartService;
 use App\Enums\OrderStatusEnum;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
+    protected CartService $cartService;
+
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
+
     /**
      * Show the user's cart with grouped cart items.
      */
-    public function index(CartService $cartService)
+    public function index()
     {
         return Inertia::render('Cart/Index', [
-            'cartItems' => $cartService->getCartItemsGrouped(), // Get grouped cart items for display
+            'cartItems' => $this->cartService->getCartItemsGrouped(), // Get grouped cart items for display
         ]);
     }
 
     /**
      * Add a product to the user's cart.
      */
-    public function store(Request $request, Product $product, CartService $cartService)
+    public function store(Request $request, Product $product)
     {
         // Set default quantity if not provided
         $request->mergeIfMissing([
@@ -42,7 +49,7 @@ class CartController extends Controller
         ]);
 
         // Add product to the cart
-        $cartService->addItemToCart(
+        $this->cartService->addItemToCart(
             $product,
             $data['quantity'],
             $data['option_ids'] ?: []
@@ -55,7 +62,7 @@ class CartController extends Controller
     /**
      * Update the quantity of a product in the cart.
      */
-    public function update(Request $request, Product $product, CartService $cartService)
+    public function update(Request $request, Product $product)
     {
         // Validate the request
         $request->validate([
@@ -67,7 +74,7 @@ class CartController extends Controller
         $quantity = $request->input('quantity');
 
         // Update item quantity
-        $cartService->updateItemQuantity($product->id, $quantity, $optionIds);
+        $this->cartService->updateItemQuantity($product->id, $quantity, $optionIds);
 
         // Redirect back with success message
         return back()->with('success', 'ផលិតផលធ្វើបច្ចុប្បន្នភាពបានជោគជ័យ!');
@@ -76,28 +83,78 @@ class CartController extends Controller
     /**
      * Remove a product from the cart.
      */
-    public function destroy(Request $request, Product $product, CartService $cartService)
+    public function destroy(Request $request, Product $product)
     {
         $optionIds = $request->input('option_ids'); // Get variation options (if any)
 
         // Remove item from the cart
-        $cartService->removeItemFromCart($product->id, $optionIds);
+        $this->cartService->removeItemFromCart($product->id, $optionIds);
 
         return back()->with('success', 'ផលិតផលត្រូវបានដកចេញពីកន្ទ្រកដោយជោគជ័យ!');
     }
 
     /**
-     * Checkout the cart and create a Stripe session.
+     * Show delivery information form before checkout.
      */
-    public function checkout(Request $request, CartService $cartService)
+    public function deliveryInfo(Request $request, CartService $cartService)
     {
+        $vendorId = $request->input('vendor_id');
+
+        if ($vendorId) {
+            // Checkout for a specific vendor only
+            $cartItems = $cartService->getCartItemsGrouped();
+            $vendorCart = $cartItems[$vendorId] ?? null;
+
+            if (!$vendorCart) {
+                return redirect()->route('cart.index');
+            }
+
+            $subtotal = $vendorCart['totalPrice'];
+        } else {
+            // Checkout all items
+            $subtotal = $cartService->getTotalPrice();
+        }
+
+        // Calculate delivery fee (you can adjust this logic)
+        $deliveryFee = 2.00;
+        $total = $subtotal + $deliveryFee;
+
+        return Inertia::render('Cart/DeliveryInfo', [
+            'vendorId' => $vendorId,
+            'subtotal' => $subtotal,
+            'deliveryFee' => $deliveryFee,
+            'total' => $total
+        ]);
+    }
+
+    /**
+     * Process checkout and create Stripe session.
+     */
+    public function checkout(Request $request)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        // Validate delivery information
+        $validated = $request->validate([
+            'vendor_id' => 'nullable|exists:users,id',
+            'recipient_name' => 'required|string|max:255',
+            'street' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'county' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'delivery_fee' => 'numeric|min:0',
+        ]);
+
+        $vendorId = $validated['vendor_id'] ?? null;
+        $deliveryFee = $validated['delivery_fee'] ?? 5.00;
+
         // Set Stripe API key
         \Stripe\Stripe::setApiKey(config('app.stripe_secret_key'));
 
-        $vendorId = $request->input('vendor_id'); // Optional: checkout for one vendor only
-
         // Retrieve all grouped cart items
-        $allCartItems = $cartService->getCartItemsGrouped();
+        $allCartItems = $this->cartService->getCartItemsGrouped();
 
         DB::beginTransaction(); // Start DB transaction
 
@@ -105,7 +162,7 @@ class CartController extends Controller
             // Determine items to checkout (all or specific vendor)
             $checkoutCartItems = $allCartItems;
             if ($vendorId) {
-                $checkoutCartItems = [$allCartItems[$vendorId]];
+                $checkoutCartItems = [$vendorId => $allCartItems[$vendorId]];
             }
 
             $orders = [];    // To hold order objects
@@ -115,13 +172,20 @@ class CartController extends Controller
                 $user = $item['user'];       // Vendor user
                 $cartItems = $item['items']; // Items from cart
 
-                // Create an order
+                // Create an order with delivery information
                 $order = Order::create([
                     'session_id' => null,
                     'user_id' => $request->user()->id,
                     'vendor_user_id' => $user['id'],
-                    'total_price' => $item['totalPrice'],
+                    'total_price' => $item['totalPrice'] + $deliveryFee,
                     'status' => OrderStatusEnum::Draft->value,
+                    'recipient_name' => $validated['recipient_name'],
+                    'street' => $validated['street'],
+                    'city' => $validated['city'],
+                    'county' => $validated['county'],
+                    'phone' => $validated['phone'],
+                    'delivery_fee' => $deliveryFee,
+                    'delivery_status' => 'Pending'
                 ]);
 
                 if (!$order) {
@@ -132,7 +196,6 @@ class CartController extends Controller
 
                 // Create order items and Stripe line items
                 foreach ($cartItems as $cartItem) {
-
                     // Save order item
                     OrderItem::create([
                         'order_id' => $order->id,
@@ -167,7 +230,21 @@ class CartController extends Controller
 
                     $lineItems[] = $lineItem;
                 }
+
+                // Add delivery fee as a separate line item
+                $lineItems[] = [
+                    'price_data' => [
+                        'currency' => config('app.currency'),
+                        'product_data' => [
+                            'name' => 'Delivery Fee',
+                            'description' => 'Shipping and handling',
+                        ],
+                        'unit_amount' => $deliveryFee * 100,
+                    ],
+                    'quantity' => 1,
+                ];
             }
+
             if (empty($lineItems)) {
                 throw new \Exception("Your cart is empty or something went wrong preparing your order.");
             }

@@ -19,6 +19,10 @@ Route::get('/d/{department:slug}', [ProductController::class, 'byDepartment'])
 Route::get('/s/{vendor:store_name}', [VendorController::class, 'profile'])
     ->name('vendor.profile');
 
+Route::get('/cart/delivery-info', [CartController::class, 'deliveryInfo'])
+    ->name('cart.delivery-info');
+
+
 Route::controller(CartController::class)->group(function () {
     Route::get('/cart', 'index')->name('cart.index');
     Route::post('/cart/store/{product}', 'store')

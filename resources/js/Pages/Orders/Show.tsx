@@ -2,7 +2,7 @@ import { Head, Link } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CurrencyFormatter from "@/Components/Core/CurrencyFormatter";
 import { Order } from "@/types";
-import { EnvelopeIcon } from "@heroicons/react/24/outline";
+import { EnvelopeIcon, TruckIcon } from "@heroicons/react/24/outline";
 
 type Props = {
   order: Order;
@@ -10,16 +10,27 @@ type Props = {
 
 export default function Show({ order }: Props) {
   const orderPlaced = new Date(order.created_at).toLocaleString();
-
+  const hasOrderItems = order.orderItems && order.orderItems.length > 0;
   const storeName =
     order.vendorUser?.store_name && order.vendorUser.store_name.trim() !== ""
       ? order.vendorUser.store_name
       : "N/A";
 
-  // Use same logic as History page:
-  // Only show "No items found in this order." if there are NONE orderItems (or falsy), not if the product is missing.
-  const hasOrderItems =
-    order.orderItems && order.orderItems.length > 0;
+  // Define badge color based on delivery status
+  const getDeliveryStatusColor = (status: string) => {
+    switch (status) {
+      case "Pending":
+        return "gray";
+      case "Packing":
+        return "blue";
+      case "Shipping":
+        return "yellow";
+      case "Received":
+        return "green";
+      default:
+        return "gray";
+    }
+  };
 
   return (
     <AuthenticatedLayout>
@@ -29,6 +40,7 @@ export default function Show({ order }: Props) {
           <h2 className="text-3xl font-bold mb-6">
             ព័ត៏មានលម្អិតនៃការបញ្ជាទិញ
           </h2>
+
           {/* Seller Info */}
           <div className="mb-5 pb-3 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3">
@@ -58,6 +70,67 @@ export default function Show({ order }: Props) {
             </div>
             <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
               <span className="font-bold">ពេលវេលា:</span> {orderPlaced}
+            </div>
+          </div>
+
+          {/* Delivery Information */}
+          <div className="mb-5 pb-3 border-b border-gray-200 dark:border-gray-700">
+            <h4 className="font-semibold mb-3 text-gray-700 dark:text-white text-base flex items-center">
+              <TruckIcon className="w-5 h-5 mr-2" />
+              ព័ត៌មានដឹកជញ្ជូន
+            </h4>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <span className="font-bold">អ្នកទទួល:</span>{" "}
+                  {order.delivery.recipient_name}
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <span className="font-bold">លេខទូរស័ព្ទ:</span>{" "}
+                  {order.delivery.phone}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  <span className="font-bold">អាសយដ្ឋាន:</span>{" "}
+                  {order.delivery.street}, {order.delivery.city},{" "}
+                  {order.delivery.county}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between mt-3">
+              <div>
+                <span className="font-bold text-gray-700 dark:text-gray-300">
+                  ស្ថានភាព:
+                </span>
+                <span
+                  className={`ml-2 px-2 py-1 text-xs font-medium rounded-full bg-${getDeliveryStatusColor(
+                    order.delivery.delivery_status
+                  )}-100 text-${getDeliveryStatusColor(
+                    order.delivery.delivery_status
+                  )}-800`}
+                >
+                  {order.delivery.delivery_status}
+                </span>
+              </div>
+
+              {(order.delivery.delivery_status === "Shipping" ||
+                  order.delivery.delivery_status === "Received") &&
+                order.delivery.deliver_phone && (
+                  <div>
+                    <span className="font-bold text-gray-700 dark:text-gray-300">
+                      លេខអ្នកដឹកជញ្ជូន:
+                    </span>
+                    <a
+                      href={`tel:${order.delivery.deliver_phone}`}
+                      className="ml-2 text-blue-600 hover:underline"
+                    >
+                      {order.delivery.deliver_phone}
+                    </a>
+                  </div>
+                )}
             </div>
           </div>
 
@@ -97,14 +170,33 @@ export default function Show({ order }: Props) {
           </div>
 
           {/* Total & Back Button */}
-          <div className="flex items-center justify-between mt-8 border-t pt-5">
-            <span className="text-lg font-bold text-gray-800 dark:text-white">
-              សរុប
-            </span>
-            <span className="text-xl font-bold text-green-600">
-              <CurrencyFormatter amount={order.total_price} />
-            </span>
+          <div className="mt-6 border-t pt-4 space-y-2">
+            <div className="flex justify-between">
+              <span className="text-gray-600 dark:text-gray-400">
+                តម្លៃទំនិញ:
+              </span>
+              <span className="font-medium">
+                <CurrencyFormatter
+                  amount={order.total_price - order.delivery.delivery_fee}
+                />
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600 dark:text-gray-400">
+                តម្លៃដឹកជញ្ជូន:
+              </span>
+              <span className="font-medium">
+                <CurrencyFormatter amount={order.delivery.delivery_fee} />
+              </span>
+            </div>
+            <div className="flex justify-between text-lg font-bold border-t pt-2">
+              <span>សរុប:</span>
+              <span className="text-green-600">
+                <CurrencyFormatter amount={order.total_price} />
+              </span>
+            </div>
           </div>
+
           <div className="mt-6 flex justify-end">
             <Link
               href={route("dashboard")}

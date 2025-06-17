@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 import {Product} from "@/types";
 import {Link, useForm} from "@inertiajs/react";
 import CurrencyFormatter from "@/Components/Core/CurrencyFormatter";

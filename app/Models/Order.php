@@ -17,6 +17,16 @@ class Order extends Model
         'payment_commission',
         'vendor_subtotal',
         'payment_intent',
+        'vendor_user_id',
+        'recipient_name',
+        'street',
+        'city',
+        'county',
+        'phone',
+        'delivery_fee',
+        'delivery_status',
+        'deliver_phone',
+
     ];
 
     public function orderItems(): HasMany

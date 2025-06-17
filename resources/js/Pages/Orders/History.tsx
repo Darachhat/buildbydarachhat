@@ -1,105 +1,95 @@
 import { Head, Link } from "@inertiajs/react";
-import { Order, OrderItem } from "@/types";
-import CurrencyFormatter from "@/Components/Core/CurrencyFormatter";
-import React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import CurrencyFormatter from "@/Components/Core/CurrencyFormatter";
+import { Order } from "@/types";
+import { TruckIcon } from "@heroicons/react/24/outline";
 
 type Props = {
   orders: Order[];
 };
 
+
 export default function History({ orders }: Props) {
+
   return (
     <AuthenticatedLayout>
-      <Head title="ប្រវិត្តការបញ្ជារទិញ" />
-      <div className="max-w-4xl mx-auto py-10 px-4 font-khmer">
-        <h2 className="text-3xl font-bold mb-8">ប្រវិត្តការបញ្ជារទិញ</h2>
+      <Head title="Order History" />
+      <div className="container mx-auto py-10 px-4">
+        <h1 className="text-2xl font-bold mb-6 font-khmer">ប្រវត្តិការបញ្ជាទិញ</h1>
 
         {orders.length === 0 ? (
-          <div className="text-center text-gray-500 py-20">
-            អ្នកមិនទាន់មានការបញ្ជាទិញទេ
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 text-center">
+            <p className="text-gray-500 dark:text-gray-400 font-khmer">
+              អ្នកមិនទាន់មានការបញ្ជាទិញណាមួយនៅឡើយទេ
+            </p>
           </div>
         ) : (
-          <div className="space-y-8">
-            {orders.map(order => (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {orders.map((order) => (
               <div
                 key={order.id}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow p-6"
+                className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden"
               >
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b pb-4 mb-4">
-                  <div>
-                    <div className="text-sm text-gray-500">
-                      ការបញ្ជាទិញ #<span className="font-medium text-gray-700">{order.id}</span>
-                    </div>
-                    <div className="text-gray-500">
-                      ពេលវេលា:{" "}
-                      <span className="font-medium">
-                        {new Date(order.created_at).toLocaleString()}
-                      </span>
-                    </div>
+                <div className="p-5 border-b border-gray-200 dark:border-gray-700">
+                  <div className="flex justify-between items-center mb-2">
+                    <h2 className="font-bold text-lg font-khmer">
+                      បញ្ជាទិញ #{order.id}
+                    </h2>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                      {new Date(order.created_at).toLocaleDateString()}
+                    </span>
                   </div>
-                  <div className="flex flex-col md:items-end mt-2 md:mt-0">
-                    <div className="text-sm text-gray-600">
-                      Status: <span className="font-semibold">{order.status}</span>
-                    </div>
-                    <div className="text-lg font-bold text-green-600">
-                      <CurrencyFormatter amount={order.total_price} />
-                    </div>
+
+                  {/* Delivery Status */}
+                  <div className="flex items-center mb-2">
+                    <TruckIcon className="h-4 w-4 mr-1 text-gray-500" />
+                    <span className="text-sm font-khmer mr-2">ស្ថានភាព:</span>
+                    <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
+                      order.delivery.delivery_status === 'Pending' ? 'bg-gray-100 text-gray-800' :
+                        order.delivery.delivery_status === 'Packing' ? 'bg-blue-100 text-blue-800' :
+                          order.delivery.delivery_status === 'Shipping' ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-green-100 text-green-800'
+                    }`}>
+                      {order.delivery.delivery_status}
+                    </span>
                   </div>
-                </div>
-                {order.orderItems && order.orderItems.length > 0 ? (
-                  <div>
-                    {order.orderItems.map((item: OrderItem) => (
-                      <div key={item.id} className="flex items-center gap-4 py-2">
-                        <img
-                          src={item.product.image}
-                          alt={item.product.title}
-                          className="w-12 h-12 object-cover rounded border dark:border-gray-700"
-                        />
-                        <div className="flex-1">
-                          <Link
-                            href={route('product.show', item.product.slug)}
-                            className="font-medium text-gray-800 dark:text-white hover:underline"
-                          >
-                            {item.product.title}
-                          </Link>
-                          <div className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1  font-khmer" dangerouslySetInnerHTML={{__html: item.product.description}}/>
-                          <div className="text-sm text-gray-500 dark:text-gray-400">
-                            ចំនួន: {item.quantity}
-                          </div>
-                        </div>
-                        <div className="text-gray-800 font-semibold">
-                          <CurrencyFormatter amount={item.price} />
-                        </div>
+
+                  {/* Delivery Phone (only show for Shipping/Received) */}
+                  {(order.delivery.delivery_status === 'Shipping' || order.delivery.delivery_status === 'Received') &&
+                    order.delivery.deliver_phone && (
+                      <div className="text-sm mb-2">
+                        <span className="font-khmer">លេខអ្នកដឹកជញ្ជូន:</span>{" "}
+                        <a href={`tel:${order.delivery.deliver_phone}`} className="text-blue-600 hover:underline">
+                          {order.delivery.deliver_phone}
+                        </a>
                       </div>
-                    ))}
+                    )}
+                </div>
+
+                <div className="p-5">
+                  <div className="flex justify-between mb-4">
+                    <span className="font-khmer">ចំនួនទំនិញ:</span>
+                    <span className="font-medium">
+                      {order.orderItems.reduce((sum, item) => sum + item.quantity, 0)}
+                    </span>
                   </div>
-                ) : (
-                  <div className="text-gray-400 text-center py-6">
-                    No items found in this order.
+                  <div className="flex justify-between mb-4 font-bold">
+                    <span className="font-khmer">សរុប:</span>
+                    <span className="text-green-600">
+                      <CurrencyFormatter amount={order.total_price} />
+                    </span>
                   </div>
-                )}
-                <div className="mt-6 flex justify-end">
                   <Link
                     href={route("orders.show", order.id)}
-                    className="inline-block px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded"
+                    className="btn btn-primary w-full font-khmer"
                   >
-                    ព័ត៏មានការបញ្ជាទិញលម្អិត
+                    មើលព័ត៌មានលម្អិត
                   </Link>
                 </div>
               </div>
             ))}
           </div>
         )}
-
-        <div className="mt-10">
-          <Link
-            href={route("dashboard")}
-            className="inline-block px-5 py-2 bg-white hover:bg-gray-300 rounded text-green-700 font-medium"
-          >
-            ត្រលប់ទៅកាន់ទំព័រដើម
-          </Link>
-        </div>
       </div>
     </AuthenticatedLayout>
   );

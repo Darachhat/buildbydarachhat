@@ -1,19 +1,19 @@
 import { Config } from 'ziggy-js';
 
 export interface User {
-    id: number;
-    name: string;
-    email: string;
-    email_verified_at?: string;
-    stripe_account_active: boolean;
-    vendor: {
-      status: string;
-      store_label: string;
-      store_name: string;
-      store_address: string;
-      telegram_link: string;
-      cover_image: string;
-    }
+  id: number;
+  name: string;
+  email: string;
+  email_verified_at?: string;
+  stripe_account_active: boolean;
+  vendor: {
+    status: string;
+    store_label: string;
+    store_name: string;
+    store_address: string;
+    telegram_link: string;
+    cover_image: string;
+  }
 }
 
 export type Image = {
@@ -81,8 +81,25 @@ export type CartItem = {
   options: VariationTypeOption[]
 }
 
+// Updated PaginationProps to include Laravel pagination structure
 export type PaginationProps<T> = {
-  data: Array<T>
+  data: Array<T>;
+  current_page: number;
+  first_page_url: string;
+  from: number;
+  last_page: number;
+  last_page_url: string;
+  next_page_url: string | null;
+  path: string;
+  per_page: number;
+  prev_page_url: string | null;
+  to: number;
+  total: number;
+  links: Array<{
+    url: string | null;
+    label: string;
+    active: boolean;
+  }>;
 }
 
 export type GroupedCartItems = {
@@ -93,7 +110,7 @@ export type GroupedCartItems = {
 }
 
 export type PageProps<
-    T extends Record<string, unknown> = Record<string, unknown>,
+  T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
   appName: string;
   csrf_token: string;
@@ -102,15 +119,15 @@ export type PageProps<
     message: string;
     time: number;
   };
-    auth: {
-        user: User;
-    };
-    ziggy: Config & { location: string };
-    totalQuantity: number;
-    totalPrice: number;
-    miniCartItems: CartItem[];
-    departments: Department[];
-    keyword: string;
+  auth: {
+    user: User;
+  };
+  ziggy: Config & { location: string };
+  totalQuantity: number;
+  totalPrice: number;
+  miniCartItems: CartItem[];
+  departments: Department[];
+  keyword: string;
 };
 
 export type OrderItem = {
@@ -140,6 +157,16 @@ export type Order = {
     store_name: string;
     store_address: string;
     telegram_link: string;
+  };
+  delivery: {
+    recipient_name: string;
+    street: string;
+    city: string;
+    county: string;
+    phone: string;
+    delivery_fee: number;
+    delivery_status: string;
+    deliver_phone: string | null;
   };
   orderItems: OrderItem[];
 }

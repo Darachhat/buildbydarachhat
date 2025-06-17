@@ -40,8 +40,7 @@ function Index(
                       </Link>
 
                       <div>
-                        <form action={route('cart.checkout')} method="post">
-                          <input type="hidden" name="_token" value={csrf_token}/>
+                        <form action={route('cart.delivery-info')} method="get">
                           <input type="hidden" name="vendor_id" value={cartItems.user.id}/>
                           <button className="btn btn-sm btn-ghost font-khmer">
                             <CreditCardIcon className="size-6" />
@@ -63,13 +62,13 @@ function Index(
           <div className={'card-body'}>
             Subtotal ({totalQuantity} items): &nbsp;
             <CurrencyFormatter amount={totalPrice} locale={"en-US"} />
-            <form action={route('cart.checkout')} method="post">
-              <input type="hidden" name="_token" value={csrf_token}/>
+            <form action={route('cart.delivery-info')} method="get">
               <PrimaryButton className="rounded-full font-khmer">
                 <CreditCardIcon className="size-6" />
-                បន្តទៅការទូទាត់
+                Process to Checkout
               </PrimaryButton>
             </form>
+
           </div>
         </div>
       </div>

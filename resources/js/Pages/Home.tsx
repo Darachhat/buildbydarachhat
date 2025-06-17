@@ -14,7 +14,6 @@ export default function Home({
   return (
     <AuthenticatedLayout>
       <Head title="Home"/>
-
       {/* Hero Section */}
       <div className="bg-green-50 dark:bg-gray-700 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center justify-between gap-10">
