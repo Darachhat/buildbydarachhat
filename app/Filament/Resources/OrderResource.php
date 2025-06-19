@@ -2,8 +2,10 @@
 
     namespace App\Filament\Resources;
 
+    use App\Enums\RolesEnum;
     use App\Filament\Resources\OrderResource\Pages;
     use App\Models\Order;
+    use Filament\Facades\Filament;
     use Filament\Forms;
     use Filament\Forms\Form;
     use Filament\Resources\Resource;
@@ -142,6 +144,11 @@
                 'view' => Pages\ViewOrder::route('/{record}'),
                 'edit' => Pages\EditOrder::route('/{record}/edit'),
             ];
+        }
+        public static function canViewAny(): bool
+        {
+            $user =  Filament::auth()->user();
+            return $user->hasRole(RolesEnum::Vendor);
         }
 
         public static function getEloquentQuery(): Builder
