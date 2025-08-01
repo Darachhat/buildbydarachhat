@@ -18,10 +18,7 @@
 
 **Backend:**
 - Laravel (PHP)
-- MySQL (or other DB as configured)
-- Filament Admin Panel
-- Spatie Laravel Permission (RBAC)
-- Laravel Stripe Connect (payment integration)
+- MySQL 
 
 **Other:**
 - Blade (for some server-rendered views)
