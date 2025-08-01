@@ -26,7 +26,6 @@
 **Other:**
 - Blade (for some server-rendered views)
 - Inertia.js (bridges Laravel & React)
-- Redis, Memcached, SQS (Queue & Cache drivers)
 
 ---
 
