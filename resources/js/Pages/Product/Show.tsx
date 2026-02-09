@@ -279,13 +279,13 @@ function Show({
         <meta property="og:type" content="product" />
         <meta property="og:site_name" content={appName} />
       </Head>
-      <div className="container mx-auto p-8 bg-green-50" >
+      <div className="container mx-auto p-8 bg-green-50 dark:bg-base-100" >
         <div className="grid gap-8 grid-cols-1 lg:grid-cols-12">
           <div className="col-span-7">
             <Carousel images={images} />
           </div>
           <div className="col-span-7 lg:col-span-5">
-            <div className="bg-white rounded-2xl shadow p-6">
+            <div className="bg-white dark:!bg-gray-300 rounded-2xl shadow p-6">
               <h1 className="text-3xl font-bold text-gray-800 mb-2">{product.title}</h1>
               <p className="mb-1 mt-2 text-sm font-khmer text-gray-600">
                 ផលិតផលរបស់{' '}
@@ -342,7 +342,7 @@ function Show({
               <div className="mb-2 border-t pt-4">
                 <b className="text-xl font-khmer block mb-2 text-gray-800">អំពីផលិតផលនេះ</b>
                 <div
-                  className="wysiwyg-output font-khmer prose prose-green max-w-none"
+                  className="wysiwyg-output font-khmer prose prose-green dark:text-gray-700 max-w-none"
                   dangerouslySetInnerHTML={{ __html: product.description }}
                 />
               </div>

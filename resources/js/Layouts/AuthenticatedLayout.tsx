@@ -46,7 +46,7 @@ export default function AuthenticatedLayout({
   }, [props.success])
 
   return (
-    <div className="min-h-screen bg-green-100 dark:bg-gray-900">
+    <div className="min-h-screen bg-green-100 dark:bg-base-100">
       <Navbar/>
 
       {props.error && (<div className={"container mx-auto px-8 mt-8"}>

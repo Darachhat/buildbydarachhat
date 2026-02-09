@@ -62,10 +62,10 @@
                             Forms\Components\Select::make('delivery_status')
                                 ->label('ស្ថានភាពការដឹកជញ្ជូន')
                                 ->options([
-                                    'Pending' => 'រង់ចាំ',
-                                    'Packing' => 'វេចខ្ចប់',
-                                    'Shipping' => 'ដឹកជញ្ជូន',
-                                    'Received' => 'ដល់ទីតាំង',
+                                    'Pending' => 'Pending',
+                                    'Packing' => 'Packing',
+                                    'Shipping' => 'Shipping',
+                                    'Received' => 'Received',
                                 ])
                                 ->required(),
                             Forms\Components\TextInput::make('deliver_phone')
@@ -109,10 +109,10 @@
                     Tables\Columns\BadgeColumn::make('delivery_status')
                         ->label('ស្ថានភាពការដឹកជញ្ជូន')
                         ->colors([
-                            'gray' => 'រង់ចាំ',
-                            'blue' => 'វេចខ្ចប់',
-                            'yellow' => 'ដឹកជញ្ជូន',
-                            'green' => 'ដល់ទីតាំង',
+                            'gray' => 'Pending',
+                            'blue' => 'Packing',
+                            'yellow' => 'Shipping',
+                            'green' => 'Received',
                         ]),
                 ])
                 ->filters([

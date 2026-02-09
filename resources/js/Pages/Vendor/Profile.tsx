@@ -19,7 +19,7 @@ function Profile({
       {/* Modern Glassmorphism Hero Section with Animated Gradient */}
       <section className="px-12 relative flex items-center justify-center min-h-[400px] overflow-hidden">
         {/* Animated Gradient Background */}
-        <div className="absolute inset-0 z-0 animate-gradient bg-[length:300%_300%] bg-gradient-to-r from-indigo-700 via-fuchsia-500 via-pink-400 to-blue-400" />
+        <div className="absolute inset-0 z-0 animate-gradient bg-[length:300%_300%] bg-gradient-to-r from-black-700 via-green-500 to-blue-400" />
         {/* Blurred Overlay Image */}
         <div
           className="absolute inset-0 z-10 bg-cover bg-center"
@@ -51,22 +51,9 @@ function Profile({
       </section>
 
       {/* Products Grid Section */}
-      <section className="bg-gradient-to-br from-slate-100 via-indigo-50 to-white min-h-screen py-14">
+      <section className="bg-gradient dark:bg-base-100 from-slate-100 via-indigo-50 to-white min-h-screen py-14">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center justify-between mb-8 gap-4">
-
-            {/* Example filter bar for modern UX */}
-            <div className="flex px-12 gap-2">
-              <button className="px-4 py-2 bg-white/80 border rounded-lg text-sm text-gray-700 hover:bg-indigo-100 transition">
-                All
-              </button>
-              <button className="px-4 py-2 bg-white/80 border rounded-lg text-sm text-gray-700 hover:bg-indigo-100 transition">
-                Newest
-              </button>
-              <button className="px-4 py-2 bg-white/80 border rounded-lg text-sm text-gray-700 hover:bg-indigo-100 transition">
-                Popular
-              </button>
-            </div>
           </div>
           <div className="px-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {products.data.map((product) => (

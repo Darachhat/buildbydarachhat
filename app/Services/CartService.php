@@ -152,9 +152,12 @@ class CartService
     {
         $userId = Auth::id();
 
+        ksort($optionIds);
+        $optionIds = array_values($optionIds);
+
         $cartItem = CartItem::where('user_id', $userId)
             ->where('product_id', $productId)
-            ->where('variation_type_option_ids', json_encode($optionIds))
+            ->whereJsonContains('variation_type_option_ids', $optionIds)
             ->first();
 
         if ($cartItem) {
@@ -169,6 +172,7 @@ class CartService
         $cartItems = $this->getCartItemsFromCookies();
 
         ksort($optionIds);
+        $optionIds = array_values($optionIds);
 
         $itemKey = $productId . '_' . json_encode($optionIds);
 
@@ -184,10 +188,11 @@ class CartService
     {
         $userId = Auth::id();
         ksort($optionIds);
+        $optionIds = array_values($optionIds);
 
         $cartItem = CartItem::where('user_id', $userId)
             ->where('product_id', $productId)
-            ->where('variation_type_option_ids', json_encode($optionIds))
+            ->whereJsonContains('variation_type_option_ids', $optionIds)
             ->first();
 
         if ($cartItem) {
@@ -201,16 +206,16 @@ class CartService
                 'quantity' => $quantity,
                 'price' => $price,
                 'variation_type_option_ids' => $optionIds,
-
             ]);
         }
     }
 
     protected function saveItemToCookies(int $productId, int $quantity, $price, array $optionIds): void
     {
-
         $cartItems = $this->getCartItemsFromCookies();
         ksort($optionIds);
+        $optionIds = array_values($optionIds);
+
         $itemKey = $productId . '_' . json_encode($optionIds);
 
         if (isset($cartItems[$itemKey])) {
@@ -234,10 +239,11 @@ class CartService
         $userId = Auth::id();
 
         ksort($optionIds);
+        $optionIds = array_values($optionIds);
 
         CartItem::where('user_id', $userId)
             ->where('product_id', $productId)
-            ->where('variation_type_option_ids', json_encode($optionIds))
+            ->whereJsonContains('variation_type_option_ids', $optionIds)
             ->delete();
     }
 
@@ -246,6 +252,7 @@ class CartService
         $cartItems = $this->getCartItemsFromCookies();
 
         ksort($optionIds);
+        $optionIds = array_values($optionIds);
 
         $cartKey = $productId . '_' . json_encode($optionIds);
 
@@ -303,10 +310,14 @@ class CartService
 
         // loop throught the cart items and insert them into the database
         foreach ($cartItems as $itemKey => $cartItem) {
-            // Check if re cart item already exists for the user
+            $optionIds = isset($cartItem['option_ids']) ? $cartItem['option_ids'] : [];
+            ksort($optionIds);
+            $optionIds = array_values($optionIds);
+
+            // Check if cart item already exists for the user
             $existingItem = CartItem::where('user_id', $userId)
                 ->where('product_id', $cartItem['product_id'])
-                ->where('variation_type_option_ids', json_encode($cartItem['option_ids']))
+                ->whereJsonContains('variation_type_option_ids', $optionIds)
                 ->first();
             if ($existingItem) {
                 //if the item exists, update the quantity
@@ -316,11 +327,11 @@ class CartService
                 ]);
             } else {
                 CartItem::create([
-                   'user_id' => $userId,
+                    'user_id' => $userId,
                     'product_id' => $cartItem['product_id'],
                     'quantity' => $cartItem['quantity'],
                     'price' => $cartItem['price'],
-                    'variation_type_option_ids' => $cartItem['option_ids'],
+                    'variation_type_option_ids' => $optionIds,
                 ]);
             }
         }

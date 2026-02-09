@@ -76,9 +76,6 @@ function CartItem({ item }: { item: CartItemType }) {
               >
                 លុប
               </button>
-              <button className="btn  btn-sm btn-dash font-khmer">
-                រក្សាទុកសម្រាប់ពេលក្រោយ
-              </button>
             </div>
 
             <div className="font-bold text-lg whitespace-nowrap">

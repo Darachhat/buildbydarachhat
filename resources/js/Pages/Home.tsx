@@ -57,7 +57,7 @@ export default function Home({
       )}
 
       {/* Products Grid */}
-      <div className="bg-green-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="bg-green-100 dark:bg-base-100 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto grid gap-1 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {products.data.map((product) => (
             <ProductItem product={product} key={product.id}/>

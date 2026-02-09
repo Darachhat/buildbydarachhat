@@ -29,7 +29,7 @@ class ProductController extends Controller
                     ->orWhere('description', 'LIKE', "%{$keyword}%"); // Or in description
                 });
             })
-            ->paginate(12); // Paginate with 12 products per page
+            ->paginate(12);
 
         // Render Home page with paginated product list
         return Inertia::render('Home', [
