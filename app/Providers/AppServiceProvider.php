@@ -6,6 +6,7 @@ use App\Services\CartService;
 use Illuminate\Support\Facades\Schedule;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
